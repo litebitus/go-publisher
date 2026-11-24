@@ -49,7 +49,7 @@ func TestRunPipe(t *testing.T) {
 	assertError := func(t *testing.T, err, expected error) {
 		t.Helper()
 		switch expected := expected.(type) {
-		case *tmpl.Error:
+		case tmpl.Error:
 			testlib.RequireTemplateError(t, err)
 		case errNoArchivesFound:
 			var actual errNoArchivesFound
@@ -339,7 +339,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-name-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "{{ .Nope }}",
 				Publisher:        "Beckersoft",
@@ -353,7 +353,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-releasenotes-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				ReleaseNotes:     "{{ .Nope }}",
 				Publisher:        "Beckersoft",
@@ -367,7 +367,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-publisher-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "{{ .Nope }}",
@@ -381,7 +381,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-publisher-url-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -396,7 +396,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-author-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foobar",
 				Publisher:        "Beckersoft",
@@ -411,7 +411,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-homepage-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foobar",
 				Publisher:        "Beckersoft",
@@ -426,7 +426,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-description-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foobar",
 				Publisher:        "Beckersoft",
@@ -441,7 +441,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-short-description-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foobar",
 				Publisher:        "Beckersoft",
@@ -455,7 +455,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-repo-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "doesnotmatter",
 				Publisher:        "Beckersoft",
@@ -469,7 +469,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-skip-upload-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "doesnotmatter",
 				Publisher:        "Beckersoft",
@@ -484,7 +484,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-release-notes-url-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -499,7 +499,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-release-url-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -514,7 +514,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-path-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -529,7 +529,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:               "bad-commit-msg-tmpl",
-			expectPublishError: &tmpl.Error{},
+			expectPublishError: tmpl.Error{},
 			winget: config.Winget{
 				Name:                  "foo",
 				Publisher:             "Beckersoft",
@@ -545,7 +545,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-publisher-support-url-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:                "foo",
 				Publisher:           "Beckersoft",
@@ -560,7 +560,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-copyright-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -575,7 +575,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-copyright-url-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -590,7 +590,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-license-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -604,7 +604,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-license-url-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -619,7 +619,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-default-locale-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -690,7 +690,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-dependency-template",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "foo",
 				Publisher:        "Beckersoft",
@@ -827,7 +827,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-additional-locale-field-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "bad-field-locale",
 				Publisher:        "Beckersoft",
@@ -845,7 +845,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-additional-locale-release-notes-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "bad-release-notes-locale",
 				Publisher:        "Beckersoft",
@@ -919,7 +919,7 @@ func TestRunPipe(t *testing.T) {
 		},
 		{
 			name:           "bad-additional-locale-tmpl",
-			expectRunError: &tmpl.Error{},
+			expectRunError: tmpl.Error{},
 			winget: config.Winget{
 				Name:             "bad-tmpl-locale",
 				Publisher:        "Beckersoft",
