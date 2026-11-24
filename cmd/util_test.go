@@ -84,7 +84,7 @@ release:
     owner: goreleaser
     name: fake
 `
-	createFile(tb, "goreleaser.yml", yaml)
+	createFile(tb, configFileName, yaml)
 }
 
 func setupPro(tb testing.TB) {
@@ -122,5 +122,5 @@ release:
     owner: goreleaser
     name: fake
 `
-	createFile(tb, "goreleaser.yml", yaml)
+	createFile(tb, configFileName, yaml)
 }

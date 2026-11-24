@@ -73,7 +73,7 @@ func TestReleaseAutoSnapshotWithProConfig(t *testing.T) {
 // records the full tag as the release's.
 func TestReleasePrefixedTag(t *testing.T) {
 	mktmp(t)
-	createFile(t, "goreleaser.yml", `version: 2
+	createFile(t, configFileName, `version: 2
 git:
   tag_prefix: mock-module/
 builds:
@@ -120,7 +120,7 @@ release:
 
 func TestReleaseInvalidConfig(t *testing.T) {
 	mktmp(t)
-	createFile(t, "goreleaser.yml", "foo: bar\nversion: 2")
+	createFile(t, configFileName, "foo: bar\nversion: 2")
 	cmd := newReleaseCmd()
 	cmd.cmd.SetArgs([]string{"--snapshot", "--timeout=1m", "--parallelism=2", "--deprecated"})
 	require.EqualError(t, cmd.cmd.Execute(), "yaml: unmarshal errors:\n  line 1: field foo not found in type config.Project")

@@ -9,7 +9,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// Where --config names none, .gopublisher.yml is read, and GoReleaser's file
+// names are not.
 func TestConfigFlagNotSetButExists(t *testing.T) {
+	mktmp(t)
+	createGoReleaserYaml(t)
+	proj, err := loadConfig(true, "")
+	require.NoError(t, err)
+	require.NotEqual(t, config.Project{}, proj)
+
 	for _, name := range []string{
 		".config/goreleaser.yml",
 		".config/goreleaser.yaml",
@@ -23,12 +31,12 @@ func TestConfigFlagNotSetButExists(t *testing.T) {
 			createGoReleaserYaml(t)
 			require.NoError(t, os.MkdirAll(filepath.Dir(name), 0o755))
 			require.NoError(t, os.Rename(
-				filepath.Join(folder, "goreleaser.yml"),
+				filepath.Join(folder, configFileName),
 				filepath.Join(folder, name),
 			))
 			proj, err := loadConfig(true, "")
 			require.NoError(t, err)
-			require.NotEqual(t, config.Project{}, proj)
+			require.Equal(t, config.Project{}, proj)
 		})
 	}
 }

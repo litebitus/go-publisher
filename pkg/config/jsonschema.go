@@ -2,6 +2,20 @@ package config
 
 import "github.com/invopop/jsonschema"
 
+// inlineSchemaOf reflects value into a schema written in place inside another:
+// its nested types inlined, with no $schema, $id or definitions of its own, so
+// no reference crosses into a schema resource embedded in the document.
+func inlineSchemaOf(value any) *jsonschema.Schema {
+	reflector := jsonschema.Reflector{
+		ExpandedStruct: true,
+		DoNotReference: true,
+	}
+	schema := reflector.Reflect(value)
+	schema.Version = ""
+	schema.ID = ""
+	return schema
+}
+
 func (a SlackBlock) JSONSchema() *jsonschema.Schema {
 	return &jsonschema.Schema{
 		Type:                 "object",
@@ -18,10 +32,7 @@ func (a SlackAttachment) JSONSchema() *jsonschema.Schema {
 
 func (bh Hook) JSONSchema() *jsonschema.Schema {
 	type hookAlias Hook
-	reflector := jsonschema.Reflector{
-		ExpandedStruct: true,
-	}
-	schema := reflector.Reflect(&hookAlias{})
+	schema := inlineSchemaOf(&hookAlias{})
 	return &jsonschema.Schema{
 		OneOf: []*jsonschema.Schema{
 			{
@@ -34,10 +45,7 @@ func (bh Hook) JSONSchema() *jsonschema.Schema {
 
 func (f File) JSONSchema() *jsonschema.Schema {
 	type fileAlias File
-	reflector := jsonschema.Reflector{
-		ExpandedStruct: true,
-	}
-	schema := reflector.Reflect(&fileAlias{})
+	schema := inlineSchemaOf(&fileAlias{})
 	return &jsonschema.Schema{
 		OneOf: []*jsonschema.Schema{
 			{
@@ -49,11 +57,8 @@ func (f File) JSONSchema() *jsonschema.Schema {
 }
 
 func (bhc Hooks) JSONSchema() *jsonschema.Schema {
-	reflector := jsonschema.Reflector{
-		ExpandedStruct: true,
-	}
 	var t Hook
-	schema := reflector.Reflect(&t)
+	schema := inlineSchemaOf(&t)
 	return &jsonschema.Schema{
 		OneOf: []*jsonschema.Schema{{
 			Type: "string",
@@ -92,10 +97,7 @@ func (a StringArray) JSONSchema() *jsonschema.Schema {
 
 func (a NixDependency) JSONSchema() *jsonschema.Schema {
 	type nixDependencyAlias NixDependency
-	reflector := jsonschema.Reflector{
-		ExpandedStruct: true,
-	}
-	schema := reflector.Reflect(&nixDependencyAlias{})
+	schema := inlineSchemaOf(&nixDependencyAlias{})
 	return &jsonschema.Schema{
 		OneOf: []*jsonschema.Schema{
 			{
@@ -108,10 +110,7 @@ func (a NixDependency) JSONSchema() *jsonschema.Schema {
 
 func (a PullRequestBase) JSONSchema() *jsonschema.Schema {
 	type pullRequestBaseAlias PullRequestBase
-	reflector := jsonschema.Reflector{
-		ExpandedStruct: true,
-	}
-	schema := reflector.Reflect(&pullRequestBaseAlias{})
+	schema := inlineSchemaOf(&pullRequestBaseAlias{})
 	return &jsonschema.Schema{
 		OneOf: []*jsonschema.Schema{
 			{
@@ -124,10 +123,7 @@ func (a PullRequestBase) JSONSchema() *jsonschema.Schema {
 
 func (a HomebrewDependency) JSONSchema() *jsonschema.Schema {
 	type homebrewDependencyAlias HomebrewDependency
-	reflector := jsonschema.Reflector{
-		ExpandedStruct: true,
-	}
-	schema := reflector.Reflect(&homebrewDependencyAlias{})
+	schema := inlineSchemaOf(&homebrewDependencyAlias{})
 	return &jsonschema.Schema{
 		OneOf: []*jsonschema.Schema{
 			{

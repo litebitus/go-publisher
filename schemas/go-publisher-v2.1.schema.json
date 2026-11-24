@@ -1394,10 +1394,17 @@
           "type": "string"
         },
         {
-          "$schema": "https://json-schema.org/draft/2020-12/schema",
-          "$id": "https://github.com/litebitus/go-publisher/pkg/config/file-alias",
-          "$defs": {
-            "FileInfo": {
+          "properties": {
+            "src": {
+              "type": "string"
+            },
+            "dst": {
+              "type": "string"
+            },
+            "strip_parent": {
+              "type": "boolean"
+            },
+            "info": {
               "properties": {
                 "owner": {
                   "type": "string"
@@ -1416,49 +1423,28 @@
               "type": "object"
             }
           },
-          "properties": {
-            "src": {
-              "type": "string"
-            },
-            "dst": {
-              "type": "string"
-            },
-            "strip_parent": {
-              "type": "boolean"
-            },
-            "info": {
-              "$ref": "#/$defs/FileInfo"
-            }
-          },
           "additionalProperties": false,
           "type": "object"
         }
       ]
     },
     "FileInfo": {
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://github.com/litebitus/go-publisher/pkg/config/file-info",
-      "$ref": "#/$defs/FileInfo",
-      "$defs": {
-        "FileInfo": {
-          "properties": {
-            "owner": {
-              "type": "string"
-            },
-            "group": {
-              "type": "string"
-            },
-            "mode": {
-              "type": "integer"
-            },
-            "mtime": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "type": "object"
+      "properties": {
+        "owner": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "integer"
+        },
+        "mtime": {
+          "type": "string"
         }
-      }
+      },
+      "additionalProperties": false,
+      "type": "object"
     },
     "Filters": {
       "properties": {
@@ -2082,8 +2068,6 @@
           "type": "string"
         },
         {
-          "$schema": "https://json-schema.org/draft/2020-12/schema",
-          "$id": "https://github.com/litebitus/go-publisher/pkg/config/homebrew-dependency-alias",
           "properties": {
             "name": {
               "type": "string"
@@ -2114,15 +2098,11 @@
         },
         {
           "items": {
-            "$schema": "https://json-schema.org/draft/2020-12/schema",
-            "$id": "https://github.com/litebitus/go-publisher/pkg/config/hook",
             "oneOf": [
               {
                 "type": "string"
               },
               {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "$id": "https://github.com/litebitus/go-publisher/pkg/config/hook-alias",
                 "properties": {
                   "dir": {
                     "type": "string"
@@ -3802,8 +3782,6 @@
           "type": "string"
         },
         {
-          "$schema": "https://json-schema.org/draft/2020-12/schema",
-          "$id": "https://github.com/litebitus/go-publisher/pkg/config/nix-dependency-alias",
           "properties": {
             "name": {
               "type": "string"
@@ -4230,8 +4208,6 @@
           "type": "string"
         },
         {
-          "$schema": "https://json-schema.org/draft/2020-12/schema",
-          "$id": "https://github.com/litebitus/go-publisher/pkg/config/pull-request-base-alias",
           "properties": {
             "owner": {
               "type": "string"

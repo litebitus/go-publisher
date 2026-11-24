@@ -7,14 +7,14 @@ on:
       - "**.md"
       - ".github/**"
       - ".gitignore"
-      - ".goreleaser.yaml"
+      - ".gopublisher.yml"
       - "LICENSE.md"
   pull_request:
     paths-ignore:
       - "**.md"
       - ".github/**"
       - ".gitignore"
-      - ".goreleaser.yaml"
+      - ".gopublisher.yml"
       - "LICENSE.md"
 
 permissions:

@@ -10,6 +10,9 @@ import (
 	"github.com/litebitus/go-publisher/pkg/config"
 )
 
+// configFileName is the configuration read where --config names none.
+const configFileName = ".gopublisher.yml"
+
 var proExplain = `Your configuration is for GoReleaser Pro.
 go-publisher ignores its Pro-only features.`
 
@@ -42,22 +45,12 @@ func loadConfigCheck(path string) (config.Project, string, error) {
 		p, err := config.Load(path)
 		return p, path, err
 	}
-	for _, f := range [6]string{
-		".config/goreleaser.yml",
-		".config/goreleaser.yaml",
-		".goreleaser.yml",
-		".goreleaser.yaml",
-		"goreleaser.yml",
-		"goreleaser.yaml",
-	} {
-		proj, err := config.Load(f)
-		if err != nil && errors.Is(err, fs.ErrNotExist) {
-			continue
-		}
-		return proj, f, err
+	proj, err := config.Load(configFileName)
+	if err == nil || !errors.Is(err, fs.ErrNotExist) {
+		return proj, configFileName, err
 	}
-	// the user didn't specify a config file and the known possible file names
-	// don't exist, so, return an empty config and a nil err.
+	// the user didn't specify a config file and the default one doesn't
+	// exist, so, return an empty config and a nil err.
 	log.Warn(logext.Warning("could not find a configuration file, using defaults..."))
 	return config.Project{}, "", nil
 }

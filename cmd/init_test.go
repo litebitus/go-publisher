@@ -133,7 +133,7 @@ func TestInitConfigAlreadyExist(t *testing.T) {
 
 func TestInitInvalidLanguageDoesNotCreateConfig(t *testing.T) {
 	folder := setupInitTest(t)
-	configPath := filepath.Join(folder, ".goreleaser.yaml")
+	configPath := filepath.Join(folder, configFileName)
 
 	cmd := newInitCmd().cmd
 	cmd.SetArgs([]string{"--language", "ggo"})

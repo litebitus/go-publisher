@@ -1,6 +1,6 @@
 # go-publisher
 
-go-publisher builds and publishes releases of Go projects. It is a fork of [GoReleaser](https://github.com/goreleaser/goreleaser) v2.20.3, the open-source edition, and keeps its configuration format, so an existing GoReleaser configuration releases as it did.
+go-publisher builds and publishes releases of Go projects. It is a fork of [GoReleaser](https://github.com/goreleaser/goreleaser) v2.20.3, the open-source edition, and keeps its configuration format, so an existing GoReleaser configuration releases as it did once it is named `.gopublisher.yml`.
 
 It adds what a monorepo needs: a module is released from its own prefixed tags, beside the repository's other tags. The configuration is checked against its version's JSON Schema before anything runs.
 
@@ -15,9 +15,8 @@ It adds what a monorepo needs: a module is released from its own prefixed tags, 
 
 ## Configuration
 
-The configuration keeps GoReleaser's:
+The configuration is `.gopublisher.yml`, or the file `--config` names; `init` writes `.gopublisher.yml`. It keeps GoReleaser's:
 
-- File names: `.goreleaser.yaml`, `.goreleaser.yml`, `goreleaser.yaml`, `goreleaser.yml` and their `.config/` forms, or the file `--config` names.
 - `version: 2`, the format a configuration states.
 - The `GORELEASER_*` environment variables, such as `GORELEASER_CURRENT_TAG`.
 
@@ -54,6 +53,8 @@ The configuration format and go-publisher carry separate versions. The format's 
 - A configuration states a major; it is read as that major's newest minor.
 - Each release attaches every minor's schema, and each major's as its newest minor, so a modeline naming `go-publisher-v2.schema.json` follows the newest 2.x.
 - `schemas/CHANGELOG.md` records what each minor adds and the release that first shipped it.
+
+`yaml-dsl.yml` defines the configuration as a YAML DSL, for the [YAML DSL editor](https://github.com/litebitus/vscode-yaml-dsl-editor) and every reader of the [YAML DSL standard](https://github.com/litebitus/yaml-dsl-spec).
 
 ## Tag prefix
 

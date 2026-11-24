@@ -5,7 +5,7 @@ Builds and publishes releases of Go projects, monorepo modules on prefixed tags 
 ## Features
 
 - Everything GoReleaser's open-source edition does: builds, archives, checksums, releases on GitHub, GitLab and Gitea, packages and package managers, container images, signing and SBOMs.
-- A GoReleaser configuration works as it is: the same file names, the same `version: 2` schema and the same `GORELEASER_*` environment variables.
+- A GoReleaser configuration works once it is named `.gopublisher.yml`: the same `version: 2` schema and the same `GORELEASER_*` environment variables.
 - `git.tag_prefix` releases a module from its own prefixed tags, such as `mock-module/v1.2.3`, beside the repository's other tags: the current and previous tags carry the prefix, and the version is the tag without it.
 - A GoReleaser Pro configuration runs with its Pro-only features ignored.
 
@@ -50,6 +50,8 @@ version: 2
 ```
 
 The schemas are in [schemas/](schemas), one file per minor, and what each minor adds is in [schemas/CHANGELOG.md](schemas/CHANGELOG.md).
+
+[`yaml-dsl.yml`](yaml-dsl.yml) defines the configuration as a YAML DSL: copied into a repo's `yaml-dsl.yml`, it lets the [YAML DSL editor](https://github.com/litebitus/vscode-yaml-dsl-editor) check a `.gopublisher.yml` as it is written.
 
 ## Development
 

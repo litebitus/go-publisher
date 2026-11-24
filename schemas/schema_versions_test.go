@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"testing"
 	"testing/fstest"
+
+	"github.com/litebitus/go-publisher/internal/testlib"
 )
 
 // Every minor's file is identified by its own name and titled with its version.
@@ -28,6 +30,28 @@ func TestEveryMinorSchemaIsIdentifiedByItsVersion(t *testing.T) {
 		if read.ID != "https://github.com/litebitus/go-publisher/schemas/"+schema.fileName ||
 			read.Title != "go-publisher configuration v"+schema.version() {
 			t.Errorf("%s: $id %s, title %s", schema.fileName, read.ID, read.Title)
+		}
+	}
+}
+
+// No minor's file holds an embedded schema resource, a subschema with its own
+// $id, which validators such as Ajv cannot follow a reference into.
+func TestNoMinorSchemaEmbedsASchemaResource(t *testing.T) {
+	minorSchemas, err := readMinorSchemas(schemaFiles)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, schema := range minorSchemas {
+		text, err := schemaFiles.ReadFile(schema.fileName)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var document any
+		if err := json.Unmarshal(text, &document); err != nil {
+			t.Fatalf("%s: %v", schema.fileName, err)
+		}
+		if embedded := testlib.EmbeddedSchemaIDs(document); len(embedded) > 0 {
+			t.Errorf("%s embeds schema resources at %v", schema.fileName, embedded)
 		}
 	}
 }

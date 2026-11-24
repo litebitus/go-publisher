@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/caarlos0/log"
+	"github.com/litebitus/go-publisher/internal/testlib"
 	"github.com/stretchr/testify/require"
 )
 
@@ -27,6 +28,7 @@ func TestGenerateSchema(t *testing.T) {
 	schema := map[string]any{}
 	require.NoError(t, json.NewDecoder(outFile).Decode(&schema))
 	require.Equal(t, "https://json-schema.org/draft/2020-12/schema", schema["$schema"].(string))
+	require.Empty(t, testlib.EmbeddedSchemaIDs(schema), "every definition is written in place, with no $id of its own")
 }
 
 func TestSchemaCommandErrors(t *testing.T) {

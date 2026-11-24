@@ -26,7 +26,7 @@ func newInitCmd() *initCmd {
 	cmd := &cobra.Command{
 		Use:               "init",
 		Aliases:           []string{"i"},
-		Short:             "Generates a .goreleaser.yaml file",
+		Short:             "Generates a " + configFileName + " file",
 		SilenceUsage:      true,
 		SilenceErrors:     true,
 		Args:              cobra.NoArgs,
@@ -103,7 +103,7 @@ func newInitCmd() *initCmd {
 	}
 
 	cmd.Flags().StringVarP(&root.lang, "language", "l", "go", "Which language will be used")
-	cmd.Flags().StringVarP(&root.config, "config", "f", ".goreleaser.yaml", "Load configuration from file")
+	cmd.Flags().StringVarP(&root.config, "config", "f", configFileName, "Load configuration from file")
 	_ = cmd.MarkFlagFilename("config", "yaml", "yml")
 
 	_ = cmd.RegisterFlagCompletionFunc(
