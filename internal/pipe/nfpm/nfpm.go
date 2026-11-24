@@ -13,18 +13,18 @@ import (
 
 	"dario.cat/mergo"
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/artifact"
-	"github.com/goreleaser/goreleaser/v2/internal/deprecate"
-	"github.com/goreleaser/goreleaser/v2/internal/ids"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe"
-	"github.com/goreleaser/goreleaser/v2/internal/semerrgroup"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
 	"github.com/goreleaser/nfpm/v2"
 	"github.com/goreleaser/nfpm/v2/deprecation"
 	"github.com/goreleaser/nfpm/v2/files"
+	"github.com/litebitus/go-publisher/internal/artifact"
+	"github.com/litebitus/go-publisher/internal/deprecate"
+	"github.com/litebitus/go-publisher/internal/ids"
+	"github.com/litebitus/go-publisher/internal/pipe"
+	"github.com/litebitus/go-publisher/internal/semerrgroup"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 
 	_ "github.com/goreleaser/nfpm/v2/apk"  // blank import to register the format
 	_ "github.com/goreleaser/nfpm/v2/arch" // blank import to register the format
@@ -74,7 +74,7 @@ func (Pipe) Default(ctx *context.Context) error {
 			fpm.FileNameTemplate = defaultNameTemplate
 		}
 		if fpm.Maintainer == "" {
-			deprecate.NoticeCustom(ctx, "nfpms.maintainer", "`{{ .Property }}` should always be set, check {{ .URL }} for more info")
+			deprecate.NoticeCustom(ctx, "nfpms.maintainer", "`{{ .Property }}` should always be set")
 		}
 		if len(fpm.Builds) > 0 {
 			deprecate.Notice(ctx, "nfpms.builds")

@@ -8,11 +8,11 @@ import (
 	"testing"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/gerrors"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/testctx"
-	"github.com/goreleaser/goreleaser/v2/internal/testlib"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
+	"github.com/litebitus/go-publisher/internal/gerrors"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/testctx"
+	"github.com/litebitus/go-publisher/internal/testlib"
+	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/stretchr/testify/require"
 )
 

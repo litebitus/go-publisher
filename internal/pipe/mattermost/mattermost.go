@@ -10,9 +10,9 @@ import (
 	"github.com/caarlos0/env/v11"
 	"github.com/caarlos0/log"
 
-	"github.com/goreleaser/goreleaser/v2/internal/retryx"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/retryx"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 const (

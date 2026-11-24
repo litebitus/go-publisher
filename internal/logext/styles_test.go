@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/golden"
+	"github.com/litebitus/go-publisher/internal/golden"
 )
 
 func TestDuration(t *testing.T) {

@@ -6,9 +6,9 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/pipe"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 // Pipe parses the current Git tag as a semantic version.

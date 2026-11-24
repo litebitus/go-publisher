@@ -14,16 +14,16 @@ import (
 	"sync"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/archivefiles"
-	"github.com/goreleaser/goreleaser/v2/internal/artifact"
-	"github.com/goreleaser/goreleaser/v2/internal/deprecate"
-	"github.com/goreleaser/goreleaser/v2/internal/ids"
-	"github.com/goreleaser/goreleaser/v2/internal/semerrgroup"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/archive"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/archivefiles"
+	"github.com/litebitus/go-publisher/internal/artifact"
+	"github.com/litebitus/go-publisher/internal/deprecate"
+	"github.com/litebitus/go-publisher/internal/ids"
+	"github.com/litebitus/go-publisher/internal/semerrgroup"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/archive"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 const (
@@ -35,7 +35,7 @@ const (
 // ErrArchiveDifferentBinaryCount happens when an archive uses several builds which have different goos/goarch/etc sets,
 // causing the archives for some platforms to have more binaries than others.
 // GoReleaser breaks in these cases as it will only cause confusion to other users.
-var ErrArchiveDifferentBinaryCount = errors.New("archive has different count of binaries for each platform, which may cause your users confusion.\nLearn more at https://goreleaser.com/errors/multiple-binaries-archive")
+var ErrArchiveDifferentBinaryCount = errors.New("archive has different count of binaries for each platform, which may cause your users confusion.")
 
 //nolint:gochecknoglobals
 var lock sync.Mutex

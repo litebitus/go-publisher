@@ -3,8 +3,8 @@ package cmd
 import (
 	"testing"
 
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/pkg/context"
 	"github.com/stretchr/testify/require"
 )
 

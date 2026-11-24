@@ -6,10 +6,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/defaults"
-	"github.com/goreleaser/goreleaser/v2/internal/static"
-	"github.com/goreleaser/goreleaser/v2/internal/testctx"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
+	"github.com/litebitus/go-publisher/internal/pipe/defaults"
+	"github.com/litebitus/go-publisher/internal/static"
+	"github.com/litebitus/go-publisher/internal/testctx"
+	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/require"
 )
@@ -165,7 +165,7 @@ func TestInitGitIgnoreExists(t *testing.T) {
 
 	bts, err := os.ReadFile(".gitignore")
 	require.NoError(t, err)
-	require.Equal(t, "mybinary\n# Added by goreleaser init:\ndist/\n", string(bts))
+	require.Equal(t, "mybinary\n# Added by go-publisher init:\ndist/\n", string(bts))
 }
 
 func setupInitTest(tb testing.TB) string {
@@ -194,7 +194,7 @@ func TestHasDistIgnored(t *testing.T) {
 
 		content, err := os.ReadFile(path)
 		require.NoError(t, err)
-		require.Contains(t, string(content), "# Added by goreleaser init:\ndist/\ntarget/\n")
+		require.Contains(t, string(content), "# Added by go-publisher init:\ndist/\ntarget/\n")
 	})
 
 	t.Run("file does not exist", func(t *testing.T) {
@@ -205,7 +205,7 @@ func TestHasDistIgnored(t *testing.T) {
 
 		content, err := os.ReadFile(path)
 		require.NoError(t, err)
-		require.Contains(t, string(content), "# Added by goreleaser init:\ndist/\ntarget/\n")
+		require.Contains(t, string(content), "# Added by go-publisher init:\ndist/\ntarget/\n")
 	})
 }
 
@@ -239,21 +239,21 @@ func TestSetupGitignore(t *testing.T) {
 			name:           "empty file",
 			existing:       "",
 			lines:          []string{"dist/"},
-			expectContent:  "# Added by goreleaser init:\ndist/\n",
+			expectContent:  "# Added by go-publisher init:\ndist/\n",
 			expectModified: true,
 		},
 		{
 			name:           "no newline at end",
 			existing:       "foo",
 			lines:          []string{"dist/"},
-			expectContent:  "foo\n# Added by goreleaser init:\ndist/\n",
+			expectContent:  "foo\n# Added by go-publisher init:\ndist/\n",
 			expectModified: true,
 		},
 		{
 			name:           "no newline at end with CRLF",
 			existing:       "foo\r\nbar",
 			lines:          []string{"dist/"},
-			expectContent:  "foo\r\nbar\n# Added by goreleaser init:\ndist/\n",
+			expectContent:  "foo\r\nbar\n# Added by go-publisher init:\ndist/\n",
 			expectModified: true,
 		},
 		{
@@ -267,35 +267,35 @@ func TestSetupGitignore(t *testing.T) {
 			name:           "comment does not contain line",
 			existing:       "# dist/\n",
 			lines:          []string{"dist/"},
-			expectContent:  "# dist/\n# Added by goreleaser init:\ndist/\n",
+			expectContent:  "# dist/\n# Added by go-publisher init:\ndist/\n",
 			expectModified: true,
 		},
 		{
 			name:           "suffix match does not contain line",
 			existing:       "otherdist/\n",
 			lines:          []string{"dist/"},
-			expectContent:  "otherdist/\n# Added by goreleaser init:\ndist/\n",
+			expectContent:  "otherdist/\n# Added by go-publisher init:\ndist/\n",
 			expectModified: true,
 		},
 		{
 			name:           "multiple lines",
 			existing:       "",
 			lines:          []string{"dist/", "target/", "build/"},
-			expectContent:  "# Added by goreleaser init:\ndist/\ntarget/\nbuild/\n",
+			expectContent:  "# Added by go-publisher init:\ndist/\ntarget/\nbuild/\n",
 			expectModified: true,
 		},
 		{
 			name:           "partial existing lines",
 			existing:       "dist/\n",
 			lines:          []string{"dist/", "target/", "build/"},
-			expectContent:  "dist/\n# Added by goreleaser init:\ntarget/\nbuild/\n",
+			expectContent:  "dist/\n# Added by go-publisher init:\ntarget/\nbuild/\n",
 			expectModified: true,
 		},
 		{
 			name:           "no newline at end with multiple lines",
 			existing:       "foo",
 			lines:          []string{"dist/", "target/", "build/"},
-			expectContent:  "foo\n# Added by goreleaser init:\ndist/\ntarget/\nbuild/\n",
+			expectContent:  "foo\n# Added by go-publisher init:\ndist/\ntarget/\nbuild/\n",
 			expectModified: true,
 		},
 	}

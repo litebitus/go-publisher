@@ -6,13 +6,12 @@ import (
 	"os"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/logext"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
+	"github.com/litebitus/go-publisher/internal/logext"
+	"github.com/litebitus/go-publisher/pkg/config"
 )
 
 var proExplain = `Your configuration is for GoReleaser Pro.
-You are currently using GoReleaser OSS, so all the Pro-only features will be ignored.
-Use GoReleaser Pro to enable all the features.`
+go-publisher ignores its Pro-only features.`
 
 func loadConfig(strict bool, path string) (config.Project, error) {
 	p, path, err := loadConfigCheck(path)

@@ -17,7 +17,7 @@ func newManCmd() *manCmd {
 	root := &manCmd{}
 	cmd := &cobra.Command{
 		Use:                   "man",
-		Short:                 "Generates GoReleaser's command line manpages",
+		Short:                 "Generates go-publisher's command line manpages",
 		SilenceUsage:          true,
 		DisableFlagsInUseLine: true,
 		Hidden:                true,

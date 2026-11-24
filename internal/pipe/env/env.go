@@ -12,10 +12,10 @@ import (
 	"strings"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/logext"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/logext"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/context"
 	homedir "github.com/mitchellh/go-homedir"
 )
 
@@ -29,7 +29,7 @@ type ErrMultipleTokens struct {
 }
 
 func (e ErrMultipleTokens) Error() string {
-	return fmt.Sprintf("multiple tokens found, but only one is allowed: %s\n\nLearn more at https://goreleaser.com/errors/multiple-tokens\n", strings.Join(e.tokens, ", "))
+	return fmt.Sprintf("multiple tokens found, but only one is allowed: %s", strings.Join(e.tokens, ", "))
 }
 
 // Pipe for env.

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/pkg/context"
 	"github.com/stretchr/testify/require"
 )
 

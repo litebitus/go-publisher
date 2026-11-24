@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/goreleaser/goreleaser/v2/internal/gerrors"
+	"github.com/litebitus/go-publisher/internal/gerrors"
 	"github.com/stretchr/testify/require"
 )
 

@@ -15,8 +15,8 @@ import (
 	goversion "github.com/caarlos0/go-version"
 	"github.com/caarlos0/log"
 	"github.com/charmbracelet/fang"
-	"github.com/goreleaser/goreleaser/v2/internal/gerrors"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/gerrors"
+	"github.com/litebitus/go-publisher/pkg/context"
 	"github.com/spf13/cobra"
 )
 
@@ -97,34 +97,34 @@ func newRootCmd(version goversion.Info, exit func(int)) *rootCmd {
 		exit: exit,
 	}
 	cmd := &cobra.Command{
-		Use:   "goreleaser",
-		Short: "Release engineering, simplified",
-		Long: `Release engineering, simplified.
+		Use:   "go-publisher",
+		Short: "Builds and publishes releases of Go projects",
+		Long: `Builds and publishes releases of Go projects.
 
-GoReleaser is a release automation tool, built with love and care by @caarlos0 and many contributors.
+A fork of GoReleaser by Carlos Alexandro Becker and contributors.
 
-Complete documentation is available at https://goreleaser.com`,
+Documentation: https://github.com/litebitus/go-publisher`,
 		Version:           version.String(),
 		Args:              cobra.NoArgs,
 		ValidArgsFunction: cobra.NoFileCompletions,
 		Example: `
 # Initialize your project:
-goreleaser init
+go-publisher init
 
 # Verify your configuration:
-goreleaser check
+go-publisher check
 
 # Verify dependencies:
-goreleaser healthcheck
+go-publisher healthcheck
 
 # Build the binaries only:
-goreleaser build
+go-publisher build
 
 # Run a snapshot release:
-goreleaser release --snapshot
+go-publisher release --snapshot
 
 # Run a complete release:
-goreleaser release
+go-publisher release
 		`,
 		PersistentPreRun: func(*cobra.Command, []string) {
 			if root.verbose {
@@ -133,7 +133,7 @@ goreleaser release
 			}
 		},
 		PersistentPostRun: func(*cobra.Command, []string) {
-			log.Info("thanks for using GoReleaser!")
+			log.Info("thanks for using go-publisher!")
 		},
 	}
 	cmd.SetVersionTemplate("{{.Version}}")

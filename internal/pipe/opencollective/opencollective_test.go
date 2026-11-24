@@ -6,9 +6,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/goreleaser/goreleaser/v2/internal/testctx"
-	"github.com/goreleaser/goreleaser/v2/internal/testlib"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
+	"github.com/litebitus/go-publisher/internal/testctx"
+	"github.com/litebitus/go-publisher/internal/testlib"
+	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/stretchr/testify/require"
 )
 

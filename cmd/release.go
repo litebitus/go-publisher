@@ -7,13 +7,13 @@ import (
 	"time"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/logext"
-	"github.com/goreleaser/goreleaser/v2/internal/middleware/errhandler"
-	"github.com/goreleaser/goreleaser/v2/internal/middleware/logging"
-	"github.com/goreleaser/goreleaser/v2/internal/middleware/skip"
-	"github.com/goreleaser/goreleaser/v2/internal/pipeline"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/logext"
+	"github.com/litebitus/go-publisher/internal/middleware/errhandler"
+	"github.com/litebitus/go-publisher/internal/middleware/logging"
+	"github.com/litebitus/go-publisher/internal/middleware/skip"
+	"github.com/litebitus/go-publisher/internal/pipeline"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/pkg/context"
 	"github.com/spf13/cobra"
 )
 
@@ -59,7 +59,7 @@ func newReleaseCmd() *releaseCmd {
 
 	cmd.Flags().StringVarP(&root.opts.config, "config", "f", "", "Load configuration from file")
 	_ = cmd.MarkFlagFilename("config", "yaml", "yml")
-	cmd.Flags().StringVar(&root.opts.releaseNotesFile, "release-notes", "", "Load custom release notes from a markdown file (will skip GoReleaser changelog generation)")
+	cmd.Flags().StringVar(&root.opts.releaseNotesFile, "release-notes", "", "Load custom release notes from a markdown file (will skip go-publisher changelog generation)")
 	_ = cmd.MarkFlagFilename("release-notes", "md", "mkd", "markdown")
 	cmd.Flags().StringVar(&root.opts.releaseHeaderFile, "release-header", "", "Load custom release notes header from a markdown file")
 	_ = cmd.MarkFlagFilename("release-header", "md", "mkd", "markdown")

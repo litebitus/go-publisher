@@ -7,8 +7,8 @@ import (
 
 	_ "embed"
 
-	"github.com/goreleaser/goreleaser/v2/internal/builders/buildtarget"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
+	"github.com/litebitus/go-publisher/internal/builders/buildtarget"
+	"github.com/litebitus/go-publisher/internal/tmpl"
 )
 
 var (

@@ -1,5 +1,0 @@
-CheckExternal: false
-IgnoreDirectoryMissingTrailingSlash: true
-IgnoreAltMissing: true
-IgnoreInternalEmptyHash: true
-CheckInternalHash: true

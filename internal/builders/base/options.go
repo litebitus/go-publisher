@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/build"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/build"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 // OptionsForTarget resolves the binary name and output path for a parsed target.

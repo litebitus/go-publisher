@@ -6,8 +6,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/goreleaser/goreleaser/v2/internal/pipe"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/pipe"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 const (

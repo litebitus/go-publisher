@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/packagejson"
-	"github.com/goreleaser/goreleaser/v2/internal/pyproject"
-	"github.com/goreleaser/goreleaser/v2/internal/static"
+	"github.com/litebitus/go-publisher/internal/packagejson"
+	"github.com/litebitus/go-publisher/internal/pyproject"
+	"github.com/litebitus/go-publisher/internal/static"
 	"github.com/spf13/cobra"
 )
 
@@ -142,7 +142,7 @@ func setupGitignore(path string, lines []string) (bool, error) {
 	for _, line := range lines {
 		if !ignoredLines[line] {
 			if !modified {
-				line = "# Added by goreleaser init:\n" + line
+				line = "# Added by go-publisher init:\n" + line
 				modified = true
 			}
 			if _, err := f.WriteString(line + "\n"); err != nil {

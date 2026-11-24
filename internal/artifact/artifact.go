@@ -23,7 +23,7 @@ import (
 	"sync"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/experimental"
+	"github.com/litebitus/go-publisher/internal/experimental"
 	"golang.org/x/crypto/blake2b"
 	"golang.org/x/crypto/blake2s"
 	"lukechampine.com/blake3"
@@ -239,8 +239,6 @@ func (t Type) String() string {
 }
 
 // Extra field keys used across multiple pipes.
-// If you add or change these, please update the documentation at
-// www/content/customization/general/artifacts.md as well.
 const (
 	ExtraID         = "ID"
 	ExtraBinary     = "Binary"

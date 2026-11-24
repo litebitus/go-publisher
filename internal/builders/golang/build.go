@@ -15,16 +15,16 @@ import (
 
 	"dario.cat/mergo"
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/artifact"
-	"github.com/goreleaser/goreleaser/v2/internal/builders/base"
-	gomain "github.com/goreleaser/goreleaser/v2/internal/builders/golang/gomain"
-	"github.com/goreleaser/goreleaser/v2/internal/elf"
-	"github.com/goreleaser/goreleaser/v2/internal/experimental"
-	"github.com/goreleaser/goreleaser/v2/internal/logext"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	api "github.com/goreleaser/goreleaser/v2/pkg/build"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/artifact"
+	"github.com/litebitus/go-publisher/internal/builders/base"
+	gomain "github.com/litebitus/go-publisher/internal/builders/golang/gomain"
+	"github.com/litebitus/go-publisher/internal/elf"
+	"github.com/litebitus/go-publisher/internal/experimental"
+	"github.com/litebitus/go-publisher/internal/logext"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	api "github.com/litebitus/go-publisher/pkg/build"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 const (

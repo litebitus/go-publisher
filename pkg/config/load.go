@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/logext"
-	"github.com/goreleaser/goreleaser/v2/internal/yaml"
+	"github.com/litebitus/go-publisher/internal/logext"
+	"github.com/litebitus/go-publisher/internal/yaml"
 )
 
 // VersionError will happen if the goreleaser config file version does not
@@ -19,7 +19,7 @@ type VersionError struct {
 
 // ErrProConfig happens if the configuration failed to load strictly, but
 // there's a 'pro: true' field in it, so we just allow anything.
-var ErrProConfig = errors.New("you are using a GoReleaser Pro configuration file with GoReleaser OSS")
+var ErrProConfig = errors.New("you are using a GoReleaser Pro configuration file with go-publisher")
 
 func (e VersionError) Error() string {
 	return fmt.Sprintf(

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/goreleaser/goreleaser/v2/internal/artifact"
+	"github.com/litebitus/go-publisher/internal/artifact"
 	"github.com/stretchr/testify/require"
 )
 

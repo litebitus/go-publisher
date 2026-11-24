@@ -7,14 +7,14 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/goreleaser/goreleaser/v2/internal/artifact"
-	"github.com/goreleaser/goreleaser/v2/internal/builders/buildtarget"
-	"github.com/goreleaser/goreleaser/v2/internal/builders/rust"
-	"github.com/goreleaser/goreleaser/v2/internal/builders/zig"
-	"github.com/goreleaser/goreleaser/v2/internal/testctx"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	api "github.com/goreleaser/goreleaser/v2/pkg/build"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
+	"github.com/litebitus/go-publisher/internal/artifact"
+	"github.com/litebitus/go-publisher/internal/builders/buildtarget"
+	"github.com/litebitus/go-publisher/internal/builders/rust"
+	"github.com/litebitus/go-publisher/internal/builders/zig"
+	"github.com/litebitus/go-publisher/internal/testctx"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	api "github.com/litebitus/go-publisher/pkg/build"
+	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/stretchr/testify/require"
 )
 

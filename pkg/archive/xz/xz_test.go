@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	xza "github.com/goreleaser/goreleaser/v2/pkg/archive/xz"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
+	xza "github.com/litebitus/go-publisher/pkg/archive/xz"
+	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/stretchr/testify/require"
 	"github.com/ulikunitz/xz"
 )

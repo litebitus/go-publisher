@@ -15,22 +15,22 @@ import (
 	"sync"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/artifact"
-	"github.com/goreleaser/goreleaser/v2/internal/deprecate"
-	"github.com/goreleaser/goreleaser/v2/internal/experimental"
-	"github.com/goreleaser/goreleaser/v2/internal/gerrors"
-	"github.com/goreleaser/goreleaser/v2/internal/gio"
-	"github.com/goreleaser/goreleaser/v2/internal/ids"
-	"github.com/goreleaser/goreleaser/v2/internal/logext"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe"
-	v2 "github.com/goreleaser/goreleaser/v2/internal/pipe/docker/v2"
-	"github.com/goreleaser/goreleaser/v2/internal/retryx"
-	"github.com/goreleaser/goreleaser/v2/internal/semerrgroup"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/summary"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/artifact"
+	"github.com/litebitus/go-publisher/internal/deprecate"
+	"github.com/litebitus/go-publisher/internal/experimental"
+	"github.com/litebitus/go-publisher/internal/gerrors"
+	"github.com/litebitus/go-publisher/internal/gio"
+	"github.com/litebitus/go-publisher/internal/ids"
+	"github.com/litebitus/go-publisher/internal/logext"
+	"github.com/litebitus/go-publisher/internal/pipe"
+	v2 "github.com/litebitus/go-publisher/internal/pipe/docker/v2"
+	"github.com/litebitus/go-publisher/internal/retryx"
+	"github.com/litebitus/go-publisher/internal/semerrgroup"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/summary"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 const (
@@ -87,10 +87,7 @@ func (Pipe) Default(ctx *context.Context) error {
 					logext.Warning(" and ") +
 					logext.Keyword("docker_manifests") +
 					logext.Warning(" are being phased out and will eventually be replaced by ") +
-					logext.Keyword("dockers_v2") +
-					logext.Warning(", check ") +
-					logext.URL("https://goreleaser.com/deprecations#dockers") +
-					logext.Warning(" for more info"),
+					logext.Keyword("dockers_v2"),
 			)
 		})
 
@@ -196,7 +193,7 @@ func (Pipe) Run(ctx *context.Context) error {
 				),
 			)
 			if d := len(docker.IDs); d > 0 && len(artifacts.GroupByID()) != d {
-				return pipe.Skipf("expected to find %d artifacts for ids %v, found %d\nLearn more at https://goreleaser.com/errors/docker-build\n", d, docker.IDs, len(artifacts.List()))
+				return pipe.Skipf("expected to find %d artifacts for ids %v, found %d", d, docker.IDs, len(artifacts.List()))
 			}
 			log.WithField("artifacts", artifacts.Paths()).Debug("found artifacts")
 			return process(ctx, docker, artifacts.List())
@@ -206,7 +203,7 @@ func (Pipe) Run(ctx *context.Context) error {
 		if pipe.IsSkip(err) {
 			return err
 		}
-		return fmt.Errorf("docker build failed: %w\nLearn more at https://goreleaser.com/errors/docker-build", err)
+		return fmt.Errorf("docker build failed: %w", err)
 	}
 	return nil
 }

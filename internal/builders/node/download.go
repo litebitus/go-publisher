@@ -14,9 +14,9 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/nodedist"
-	"github.com/goreleaser/goreleaser/v2/internal/packagejson"
 	"github.com/klauspost/compress/gzip"
+	"github.com/litebitus/go-publisher/internal/nodedist"
+	"github.com/litebitus/go-publisher/internal/packagejson"
 )
 
 // errNoVersion is returned by resolveVersion when no version can be

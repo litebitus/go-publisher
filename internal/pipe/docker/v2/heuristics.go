@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/logext"
+	"github.com/litebitus/go-publisher/internal/logext"
 )
 
 var projectRootMarkers = map[string]struct{}{
@@ -47,12 +47,11 @@ func emitExtraFilesWarning(markers []string) {
 	details := logext.Warning("Your extra_files contain project root markers that suggest you might be building inside Docker.") +
 		"\n\n" +
 		"Found: " + strings.Join(markers, ", ") + "\n\n" +
-		"GoReleaser already builds your binaries for all target platforms.\n" +
+		"go-publisher already builds your binaries for all target platforms.\n" +
 		"You likely don't need these files in your Docker image.\n\n" +
 		"If you do need them (e.g., for runtime configuration), you can ignore this warning.\n" +
 		"Otherwise, remove them from extra_files and copy pre-built binaries instead:\n" +
-		logext.Keyword("  COPY $TARGETPLATFORM/mybinary /usr/bin/") + "\n\n" +
-		"Learn more at " + logext.URL("https://goreleaser.com/customization/dockers_v2")
+		logext.Keyword("  COPY $TARGETPLATFORM/mybinary /usr/bin/")
 
 	log.WithField("details", details).
 		Warn("extra_files may contain unnecessary build files")

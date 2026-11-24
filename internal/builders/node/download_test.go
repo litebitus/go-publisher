@@ -13,7 +13,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/goreleaser/goreleaser/v2/internal/nodedist"
+	"github.com/litebitus/go-publisher/internal/nodedist"
 	"github.com/stretchr/testify/require"
 )
 

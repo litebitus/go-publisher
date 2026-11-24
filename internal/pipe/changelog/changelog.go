@@ -12,12 +12,12 @@ import (
 	"strings"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/changelog"
-	"github.com/goreleaser/goreleaser/v2/internal/client"
-	"github.com/goreleaser/goreleaser/v2/internal/git"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/changelog"
+	"github.com/litebitus/go-publisher/internal/client"
+	"github.com/litebitus/go-publisher/internal/git"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 type (

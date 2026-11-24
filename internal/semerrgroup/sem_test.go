@@ -7,8 +7,8 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/goreleaser/goreleaser/v2/internal/pipe"
 	"github.com/hashicorp/go-multierror"
+	"github.com/litebitus/go-publisher/internal/pipe"
 	"github.com/stretchr/testify/require"
 )
 

@@ -4,8 +4,8 @@ package build
 import (
 	"sync"
 
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 //nolint:gochecknoglobals

@@ -3,7 +3,7 @@ package config
 import (
 	"testing"
 
-	"github.com/goreleaser/goreleaser/v2/internal/yaml"
+	"github.com/litebitus/go-publisher/internal/yaml"
 	"github.com/stretchr/testify/require"
 )
 

@@ -7,7 +7,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/ulikunitz/xz"
 )
 

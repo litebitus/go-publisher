@@ -3,10 +3,8 @@ package main
 import (
 	"os"
 
-	_ "embed"
-
 	goversion "github.com/caarlos0/go-version"
-	"github.com/goreleaser/goreleaser/v2/cmd"
+	"github.com/litebitus/go-publisher/cmd"
 )
 
 //nolint:gochecknoglobals
@@ -26,15 +24,11 @@ func main() {
 	)
 }
 
-const website = "https://goreleaser.com"
-
-//go:embed art.txt
-var asciiArt string
+const website = "https://github.com/litebitus/go-publisher"
 
 func buildVersion(version, commit, date, builtBy, treeState string) goversion.Info {
 	return goversion.GetVersionInfo(
-		goversion.WithAppDetails("goreleaser", "Release engineering, simplified.", website),
-		goversion.WithASCIIName(asciiArt),
+		goversion.WithAppDetails("go-publisher", "Builds and publishes releases of Go projects.", website),
 		func(i *goversion.Info) {
 			if commit != "" {
 				i.GitCommit = commit

@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/yaml"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/yaml"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 // Pipe that writes the effective config file to dist.

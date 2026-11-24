@@ -13,12 +13,12 @@ import (
 	"time"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/git"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/internal/version"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/git"
+	"github.com/litebitus/go-publisher/internal/pipe"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/internal/version"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 // Pipe that sets up git state.
@@ -187,7 +187,7 @@ func validate(ctx *context.Context) error {
 		return pipe.ErrSkipValidateEnabled
 	}
 	if _, err := os.Stat(".git/shallow"); err == nil {
-		log.Warn("running against a shallow clone - check your CI documentation at https://goreleaser.com/ci")
+		log.Warn("running against a shallow clone")
 	}
 	if err := CheckDirty(ctx); err != nil {
 		return err

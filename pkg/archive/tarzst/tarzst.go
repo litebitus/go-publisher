@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/goreleaser/goreleaser/v2/pkg/archive/tar"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
 	"github.com/klauspost/compress/zstd"
+	"github.com/litebitus/go-publisher/pkg/archive/tar"
+	"github.com/litebitus/go-publisher/pkg/config"
 )
 
 // Archive as tar.zst.

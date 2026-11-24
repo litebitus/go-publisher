@@ -7,7 +7,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 type Key string

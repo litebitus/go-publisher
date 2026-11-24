@@ -22,7 +22,7 @@ import (
 
 // ErrNoMains happens when, after scanning the module, we still didn't find any
 // 'func main'.
-var ErrNoMains = errors.New("directory does not contain any main function\nif the main packages are behind build tags or OS constraints, set 'main' to the package path instead of an ellipsis\nLearn more at https://goreleaser.com/errors/no-main\n") //nolint:revive,staticcheck
+var ErrNoMains = errors.New("directory does not contain any main function\nif the main packages are behind build tags or OS constraints, set 'main' to the package path instead of an ellipsis") //nolint:revive,staticcheck
 
 // ErrNoMain happens when no 'func main' is found at a specific path.
 type ErrNoMain struct {
@@ -30,7 +30,7 @@ type ErrNoMain struct {
 }
 
 func (e ErrNoMain) Error() string {
-	return fmt.Sprintf("build for %s does not contain a main function\nLearn more at https://goreleaser.com/errors/no-main\n", e.bin)
+	return fmt.Sprintf("build for %s does not contain a main function", e.bin)
 }
 
 // Check checks if the given 'main' (either file or directory) contains a 'func

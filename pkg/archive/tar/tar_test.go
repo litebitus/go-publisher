@@ -13,8 +13,8 @@ import (
 	"testing/iotest"
 	"time"
 
-	"github.com/goreleaser/goreleaser/v2/internal/testlib"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
+	"github.com/litebitus/go-publisher/internal/testlib"
+	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/stretchr/testify/require"
 )
 

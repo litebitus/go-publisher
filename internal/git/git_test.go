@@ -6,10 +6,10 @@ import (
 	"testing"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/git"
-	gitpipe "github.com/goreleaser/goreleaser/v2/internal/pipe/git"
-	"github.com/goreleaser/goreleaser/v2/internal/testctx"
-	"github.com/goreleaser/goreleaser/v2/internal/testlib"
+	"github.com/litebitus/go-publisher/internal/git"
+	gitpipe "github.com/litebitus/go-publisher/internal/pipe/git"
+	"github.com/litebitus/go-publisher/internal/testctx"
+	"github.com/litebitus/go-publisher/internal/testlib"
 	"github.com/stretchr/testify/require"
 )
 

@@ -2,10 +2,10 @@ package release
 
 import (
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/client"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/client"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 // Preflight runs early release checks before the build pipeline, so that

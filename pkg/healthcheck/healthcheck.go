@@ -5,17 +5,17 @@ package healthcheck
 import (
 	"fmt"
 
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/chocolatey"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/docker"
-	dockerv2 "github.com/goreleaser/goreleaser/v2/internal/pipe/docker/v2"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/flatpak"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/makeself"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/sbom"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/sign"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/snapcraft"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/upx"
-	"github.com/goreleaser/goreleaser/v2/pkg/build"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/pipe/chocolatey"
+	"github.com/litebitus/go-publisher/internal/pipe/docker"
+	dockerv2 "github.com/litebitus/go-publisher/internal/pipe/docker/v2"
+	"github.com/litebitus/go-publisher/internal/pipe/flatpak"
+	"github.com/litebitus/go-publisher/internal/pipe/makeself"
+	"github.com/litebitus/go-publisher/internal/pipe/sbom"
+	"github.com/litebitus/go-publisher/internal/pipe/sign"
+	"github.com/litebitus/go-publisher/internal/pipe/snapcraft"
+	"github.com/litebitus/go-publisher/internal/pipe/upx"
+	"github.com/litebitus/go-publisher/pkg/build"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 // HealthChecker should be implemented by pipes that want checks.

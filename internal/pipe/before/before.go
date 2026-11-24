@@ -4,12 +4,12 @@ package before
 import (
 	"github.com/caarlos0/log"
 	"github.com/goreleaser/go-shellwords"
-	"github.com/goreleaser/goreleaser/v2/internal/gerrors"
-	"github.com/goreleaser/goreleaser/v2/internal/redact"
-	"github.com/goreleaser/goreleaser/v2/internal/shell"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/gerrors"
+	"github.com/litebitus/go-publisher/internal/redact"
+	"github.com/litebitus/go-publisher/internal/shell"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 // Pipe is a global hook pipe.

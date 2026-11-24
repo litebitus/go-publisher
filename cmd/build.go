@@ -12,17 +12,17 @@ import (
 	stdctx "context"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/artifact"
-	"github.com/goreleaser/goreleaser/v2/internal/gio"
-	"github.com/goreleaser/goreleaser/v2/internal/logext"
-	"github.com/goreleaser/goreleaser/v2/internal/middleware/errhandler"
-	"github.com/goreleaser/goreleaser/v2/internal/middleware/logging"
-	"github.com/goreleaser/goreleaser/v2/internal/middleware/skip"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe/git"
-	"github.com/goreleaser/goreleaser/v2/internal/pipeline"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/artifact"
+	"github.com/litebitus/go-publisher/internal/gio"
+	"github.com/litebitus/go-publisher/internal/logext"
+	"github.com/litebitus/go-publisher/internal/middleware/errhandler"
+	"github.com/litebitus/go-publisher/internal/middleware/logging"
+	"github.com/litebitus/go-publisher/internal/middleware/skip"
+	"github.com/litebitus/go-publisher/internal/pipe/git"
+	"github.com/litebitus/go-publisher/internal/pipeline"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 	"github.com/spf13/cobra"
 )
 
@@ -52,9 +52,9 @@ func newBuildCmd() *buildCmd {
 		Use:     "build",
 		Aliases: []string{"b"},
 		Short:   "Builds the current project",
-		Long: `The ` + "`goreleaser build`" + ` command is analogous to the ` + "`go build`" + ` command, in the sense it only builds binaries.
+		Long: `The ` + "`go-publisher build`" + ` command is analogous to the ` + "`go build`" + ` command, in the sense it only builds binaries.
 
-Its intended usage is, for example, within Makefiles to avoid setting up ldflags and etc in several places. That way, the GoReleaser config becomes the source of truth for how the binaries should be built.
+Its intended usage is, for example, within Makefiles to avoid setting up ldflags and etc in several places. That way, the go-publisher config becomes the source of truth for how the binaries should be built.
 
 It also allows you to generate a local build for your current machine only using the ` + "`--single-target`" + ` option, and specific build IDs using the ` + "`--id`" + ` option in case you have more than one.
 

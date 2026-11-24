@@ -6,16 +6,16 @@ import (
 	"time"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/artifact"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe"
-	"github.com/goreleaser/goreleaser/v2/internal/semerrgroup"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
 	"github.com/goreleaser/quill/quill"
 	"github.com/goreleaser/quill/quill/notary"
 	"github.com/goreleaser/quill/quill/pki/load"
+	"github.com/litebitus/go-publisher/internal/artifact"
+	"github.com/litebitus/go-publisher/internal/pipe"
+	"github.com/litebitus/go-publisher/internal/semerrgroup"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 // maxNotarizeTimeout is the maximum allowed notarization timeout.

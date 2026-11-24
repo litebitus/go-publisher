@@ -19,22 +19,22 @@ import (
 
 	"github.com/caarlos0/log"
 	"github.com/goreleaser/go-shellwords"
-	"github.com/goreleaser/goreleaser/v2/internal/artifact"
-	"github.com/goreleaser/goreleaser/v2/internal/deprecate"
-	"github.com/goreleaser/goreleaser/v2/internal/gerrors"
-	"github.com/goreleaser/goreleaser/v2/internal/gio"
-	"github.com/goreleaser/goreleaser/v2/internal/ids"
-	"github.com/goreleaser/goreleaser/v2/internal/logext"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe"
-	"github.com/goreleaser/goreleaser/v2/internal/redact"
-	"github.com/goreleaser/goreleaser/v2/internal/retryx"
-	"github.com/goreleaser/goreleaser/v2/internal/semerrgroup"
-	"github.com/goreleaser/goreleaser/v2/internal/shell"
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/summary"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/artifact"
+	"github.com/litebitus/go-publisher/internal/deprecate"
+	"github.com/litebitus/go-publisher/internal/gerrors"
+	"github.com/litebitus/go-publisher/internal/gio"
+	"github.com/litebitus/go-publisher/internal/ids"
+	"github.com/litebitus/go-publisher/internal/logext"
+	"github.com/litebitus/go-publisher/internal/pipe"
+	"github.com/litebitus/go-publisher/internal/redact"
+	"github.com/litebitus/go-publisher/internal/retryx"
+	"github.com/litebitus/go-publisher/internal/semerrgroup"
+	"github.com/litebitus/go-publisher/internal/shell"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/summary"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 // ExtraPlatforms is the artifact Extra key holding the list of platforms a v2
@@ -81,9 +81,7 @@ func (p Snapshot) Skip(ctx *context.Context) bool {
 	if skips.Any(ctx, skips.Publish) {
 		log.Warn(
 			logext.Keyword("dockers_v2") +
-				logext.Warning(" builds and pushes images in a single step, so no images will be built while publishing is skipped, check ") +
-				logext.URL("https://goreleaser.com/customization/package/dockers_v2/#building-and-pushing-are-a-single-step") +
-				logext.Warning(" for more info"),
+				logext.Warning(" builds and pushes images in a single step, so no images will be built while publishing is skipped"),
 		)
 	}
 	return true

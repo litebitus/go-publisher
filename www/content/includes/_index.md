@@ -1,4 +1,0 @@
----
-cascade:
-  excludeSearch: true
----

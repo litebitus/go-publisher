@@ -1,174 +1,122 @@
-name: release
+name: Release
+
 on:
-  push:
-    branches:
-      - "main"
-    tags:
-      - "v*"
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Bump level: auto (from Conventional Commits, never across a major), patch, minor or major."
+        required: true
+        type: choice
+        options: [auto, patch, minor, major]
+        default: patch
+      version:
+        description: "An explicit version, such as v1.2.3, for the first release; empty computes it from bump."
+        required: false
+        type: string
+        default: ""
+      dry_run:
+        description: "Compute and print the next version without changing anything."
+        required: true
+        type: boolean
+        default: true
+
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
-  verify:
-    runs-on: ubuntu-latest
-    needs: [goreleaser]
-    if: startsWith(github.ref, 'refs/tags/v')
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
-      - uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
-      - name: get tag
-        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> "$GITHUB_ENV"
-      - name: download artifacts
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release download "$TAG" \
-            --repo goreleaser/goreleaser \
-            --pattern 'goreleaser_Linux_x86_64.tar.gz' \
-            --pattern 'checksums.txt' \
-            --pattern 'checksums.txt.sigstore.json'
-      - name: verify checksums
-        run: shasum -a 256 --check --ignore-missing checksums.txt
-      - name: verify signature
-        run: |
-          cosign verify-blob \
-            --certificate-identity "https://github.com/goreleaser/goreleaser/.github/workflows/release.yml@refs/tags/$TAG" \
-            --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
-            --bundle checksums.txt.sigstore.json \
-            checksums.txt
-      - name: verify attestations
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh attestation verify goreleaser_Linux_x86_64.tar.gz \
-            --repo goreleaser/goreleaser \
-            --signer-repo goreleaser/goreleaser
-  goreleaser-check-pkgs:
-    runs-on: ubuntu-latest
-    env:
-      DOCKER_CLI_EXPERIMENTAL: "enabled"
-    needs: [goreleaser]
-    if: github.ref == 'refs/heads/main'
-    strategy:
-      matrix:
-        format: [deb, rpm, apk]
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
-      - uses: go-task/setup-task@a00fbb05ce67b35648be3c78cbc9fd85354c757e # v2.2.0
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ./dist/*.deb
-            ./dist/*.rpm
-            ./dist/*.apk
-          key: ${{ github.sha }}
-      - run: task goreleaser:test:${{ matrix.format }}
-  goreleaser:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
-      packages: write
-      attestations: write
-    env:
-      DOCKER_CLI_EXPERIMENTAL: "enabled"
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-      - uses: go-task/setup-task@a00fbb05ce67b35648be3c78cbc9fd85354c757e # v2.2.0
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
-      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-      - name: setup-snapcraft
-        id: snapcraft
-        run: |
-          if sudo snap install snapcraft --classic; then
-            exit 0
-          fi
-          echo "::warning::Snapcraft installation failed; skipping snap packages."
-          echo "skip=--skip=snapcraft" >> "$GITHUB_OUTPUT"
-      - name: setup-flatpak
-        run: |
-          sudo apt update -q
-          sudo apt install -yq flatpak flatpak-builder
-          sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-          sudo flatpak install -y --noninteractive flathub org.freedesktop.Platform/x86_64/24.08 org.freedesktop.Sdk/x86_64/24.08 org.freedesktop.Platform/aarch64/24.08 org.freedesktop.Sdk/aarch64/24.08
-      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+          fetch-tags: true
+
+      - name: Set up Go
+        uses: actions/setup-go@v7.0.0
         with:
           go-version-file: go.mod
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ./dist/*.deb
-            ./dist/*.rpm
-            ./dist/*.apk
-          key: ${{ github.sha }}
-      - uses: sigstore/cosign-installer@756fe2d284c7292c4e9b62c8a28f1e5629c59532 # v4.1.3
-      - uses: anchore/sbom-action/download-syft@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
-      - uses: crazy-max/ghaction-upx@c83f378efc804f828e988debb88ed6116feb2368 # v4.0.0
-        with:
-          install-only: true
-      - name: dockerhub-login
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: ghcr-login
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: "24"
-          registry-url: "https://registry.npmjs.org"
-      - uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7.3.0
-        if: ${{ startsWith(github.ref, 'refs/tags/v') }} # only on tags
-        with:
-          distribution: goreleaser-pro
-          version: nightly
-          args: release --clean --timeout 60m ${{ steps.snapcraft.outputs.skip }}
+
+      - name: Install svu
+        run: go install github.com/caarlos0/svu/v3@v3.4.1
+
+      - name: Compute the next version
+        id: version
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_PAT: ${{ secrets.GH_PAT }}
-          MASTODON_CLIENT_ID: ${{ secrets.MASTODON_CLIENT_ID }}
-          MASTODON_CLIENT_SECRET: ${{ secrets.MASTODON_CLIENT_SECRET }}
-          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
-          FURY_TOKEN: ${{ secrets.FURY_TOKEN }}
-          DISCORD_WEBHOOK_ID: ${{ secrets.DISCORD_WEBHOOK_ID }}
-          DISCORD_WEBHOOK_TOKEN: ${{ secrets.DISCORD_WEBHOOK_TOKEN }}
-          AUR_KEY: ${{ secrets.AUR_KEY }}
-          MACOS_SIGN_P12: ${{ secrets.MACOS_SIGN_P12 }}
-          MACOS_SIGN_PASSWORD: ${{ secrets.MACOS_SIGN_PASSWORD }}
-          MACOS_NOTARY_ISSUER_ID: ${{ secrets.MACOS_NOTARY_ISSUER_ID }}
-          MACOS_NOTARY_KEY_ID: ${{ secrets.MACOS_NOTARY_KEY_ID }}
-          MACOS_NOTARY_KEY: ${{ secrets.MACOS_NOTARY_KEY }}
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
-          OPENCOLLECTIVE_TOKEN: ${{ secrets.OPENCOLLECTIVE_TOKEN }}
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-      - name: goreleaser-snapshot
-        if: ${{ !startsWith(github.ref, 'refs/tags/v') }} # on main
+          BUMP: ${{ inputs.bump }}
+          OVERRIDE: ${{ inputs.version }}
         run: |
-          go build .
-          ./goreleaser release --clean --timeout 60m --snapshot ${{ steps.snapcraft.outputs.skip }}
+          set -euo pipefail
+          if [ -n "$OVERRIDE" ]; then
+            next="$OVERRIDE"
+          else
+            case "$BUMP" in
+              patch|minor|major) next="$(svu "$BUMP")" ;;
+              auto)
+                next="$(svu next)"
+                if [ "${next%%.*}" != "$(svu current | cut -d. -f1)" ]; then
+                  next="$(svu minor)"
+                fi
+                ;;
+            esac
+          fi
+          current="$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || echo '(none)')"
+          if [ "$next" = "$current" ]; then
+            echo "no version change ($next); nothing to release" >&2
+            exit 1
+          fi
+          echo "next=$next" >> "$GITHUB_OUTPUT"
+          echo "Current: $current -> Next: $next"
+
+      - name: Check the release before changing anything
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
-        if: ${{ always() }}
-        with:
-          subject-checksums: ./dist/checksums.txt
-      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
-        if: ${{ always() && startsWith(github.ref, 'refs/tags/v') }} # snapshots won't push docker images
-        with:
-          subject-checksums: ./dist/digests.txt
+          NEXT: ${{ steps.version.outputs.next }}
+        run: |
+          set -euo pipefail
+          if [ -n "$(git ls-remote --tags origin "refs/tags/${NEXT}")" ]; then
+            echo "tag $NEXT already exists on origin" >&2
+            exit 1
+          fi
+          awk '/^## Unreleased$/ { inside = 1; next } /^## / { inside = 0 } inside && NF { found = 1 } END { exit !found }' CHANGELOG.md ||
+            { echo "CHANGELOG.md has nothing under '## Unreleased' to release as $NEXT" >&2; exit 1; }
+
+      - name: Stamp the changelog, tag and push
+        if: ${{ !inputs.dry_run }}
+        env:
+          NEXT: ${{ steps.version.outputs.next }}
+        run: |
+          set -euo pipefail
+          awk '/^## Unreleased$/ { inside = 1; next } /^## / { inside = 0 } inside' CHANGELOG.md > "$RUNNER_TEMP/release-notes.md"
+          export RELEASE_DATE="$(date -u +%Y-%m-%d)"
+          perl -pi -e 's/^## Unreleased$/$&\n\n## $ENV{NEXT} — $ENV{RELEASE_DATE}/' CHANGELOG.md
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git commit -m "docs(changelog): ${NEXT}"
+          git tag -a "$NEXT" -m "Release $NEXT"
+          git push --atomic origin "HEAD:${GITHUB_REF_NAME}" "$NEXT"
+
+      - name: Build and publish the release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: go run . release --clean --release-notes "$RUNNER_TEMP/release-notes.md"
+
+      - name: Summary
+        if: ${{ !inputs.dry_run }}
+        env:
+          NEXT: ${{ steps.version.outputs.next }}
+        run: |
+          set -euo pipefail
+          commit="$(git rev-parse --short=7 HEAD)"
+          echo "Released \`go-publisher\` \`${NEXT#v}\` from commit \`${commit}\`." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Dry run summary
+        if: ${{ inputs.dry_run }}
+        run: echo "DRY RUN - would release ${{ steps.version.outputs.next }}"

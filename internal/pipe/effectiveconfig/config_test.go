@@ -10,9 +10,9 @@ import (
 	"sync"
 	"testing"
 
-	slackpipe "github.com/goreleaser/goreleaser/v2/internal/pipe/slack"
-	"github.com/goreleaser/goreleaser/v2/internal/testctx"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
+	slackpipe "github.com/litebitus/go-publisher/internal/pipe/slack"
+	"github.com/litebitus/go-publisher/internal/testctx"
+	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/stretchr/testify/require"
 )
 

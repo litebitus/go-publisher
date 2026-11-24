@@ -5,11 +5,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/goreleaser/goreleaser/v2/internal/skips"
-	"github.com/goreleaser/goreleaser/v2/internal/testctx"
-	"github.com/goreleaser/goreleaser/v2/internal/testlib"
-	"github.com/goreleaser/goreleaser/v2/pkg/config"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/testctx"
+	"github.com/litebitus/go-publisher/internal/testlib"
+	"github.com/litebitus/go-publisher/pkg/config"
+	"github.com/litebitus/go-publisher/pkg/context"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/stretchr/testify/require"
 )
@@ -196,7 +196,7 @@ func TestMultipleEnvTokens(t *testing.T) {
 	t.Setenv("GITEA_TOKEN", "token")
 	ctx := testctx.Wrap(t.Context())
 	require.Error(t, Pipe{}.Run(ctx))
-	require.EqualError(t, Pipe{}.Run(ctx), "multiple tokens found, but only one is allowed: GITHUB_TOKEN, GITLAB_TOKEN, GITEA_TOKEN\n\nLearn more at https://goreleaser.com/errors/multiple-tokens\n")
+	require.EqualError(t, Pipe{}.Run(ctx), "multiple tokens found, but only one is allowed: GITHUB_TOKEN, GITLAB_TOKEN, GITEA_TOKEN")
 }
 
 func TestMultipleEnvTokensForce(t *testing.T) {
@@ -206,7 +206,7 @@ func TestMultipleEnvTokensForce(t *testing.T) {
 	t.Setenv("GITEA_TOKEN", "token")
 	ctx := testctx.Wrap(t.Context())
 	require.Error(t, Pipe{}.Run(ctx))
-	require.EqualError(t, Pipe{}.Run(ctx), "multiple tokens found, but only one is allowed: GITHUB_TOKEN, GITLAB_TOKEN, GITEA_TOKEN\n\nLearn more at https://goreleaser.com/errors/multiple-tokens\n")
+	require.EqualError(t, Pipe{}.Run(ctx), "multiple tokens found, but only one is allowed: GITHUB_TOKEN, GITLAB_TOKEN, GITEA_TOKEN")
 }
 
 func TestEmptyGithubFileEnv(t *testing.T) {

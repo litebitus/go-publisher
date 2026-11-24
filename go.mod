@@ -1,4 +1,4 @@
-module github.com/goreleaser/goreleaser/v2
+module github.com/litebitus/go-publisher
 
 go 1.27.4
 

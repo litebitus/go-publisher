@@ -3,12 +3,12 @@ package milestone
 
 import (
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/client"
-	"github.com/goreleaser/goreleaser/v2/internal/git"
-	"github.com/goreleaser/goreleaser/v2/internal/pipe"
-	"github.com/goreleaser/goreleaser/v2/internal/summary"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/internal/client"
+	"github.com/litebitus/go-publisher/internal/git"
+	"github.com/litebitus/go-publisher/internal/pipe"
+	"github.com/litebitus/go-publisher/internal/summary"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 const defaultNameTemplate = "{{ .Tag }}"

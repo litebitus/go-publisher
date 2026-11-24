@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/goreleaser/goreleaser/v2/internal/retryx"
+	"github.com/litebitus/go-publisher/internal/retryx"
 )
 
 // Download fetches https://nodejs.org/dist/<version>/<archiveName>

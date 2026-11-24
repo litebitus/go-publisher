@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
+	"github.com/litebitus/go-publisher/pkg/context"
 )
 
 func init() {

@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/goreleaser/goreleaser/v2/internal/client"
-	"github.com/goreleaser/goreleaser/v2/internal/middleware/errhandler"
-	"github.com/goreleaser/goreleaser/v2/internal/tmpl"
-	"github.com/goreleaser/goreleaser/v2/pkg/context"
-	"github.com/goreleaser/goreleaser/v2/pkg/defaults"
+	"github.com/litebitus/go-publisher/internal/client"
+	"github.com/litebitus/go-publisher/internal/middleware/errhandler"
+	"github.com/litebitus/go-publisher/internal/tmpl"
+	"github.com/litebitus/go-publisher/pkg/context"
+	"github.com/litebitus/go-publisher/pkg/defaults"
 )
 
 // Pipe that sets the defaults.

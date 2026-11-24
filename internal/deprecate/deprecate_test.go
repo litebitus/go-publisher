@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/caarlos0/log"
-	"github.com/goreleaser/goreleaser/v2/internal/golden"
-	"github.com/goreleaser/goreleaser/v2/internal/testctx"
+	"github.com/litebitus/go-publisher/internal/golden"
+	"github.com/litebitus/go-publisher/internal/testctx"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,7 +33,7 @@ func TestNoticeCustom(t *testing.T) {
 
 	log.Info("first")
 	ctx := testctx.Wrap(t.Context())
-	NoticeCustom(ctx, "something-else", "some custom template with a url {{ .URL }}")
+	NoticeCustom(ctx, "something-else", "some custom template")
 	NoticeCustom(ctx, "something-else", "ignored")
 	NoticeCustom(ctx, "something-else", "ignored")
 	log.Info("last")
