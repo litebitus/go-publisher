@@ -429,7 +429,7 @@ func TestDefaultEmptyBuild(t *testing.T) {
 	require.Equal(t, []string{"hardfloat"}, build.Gomips)
 	require.Equal(t, []string{"v1"}, build.Goamd64)
 	require.Len(t, build.Ldflags, 1)
-	require.Equal(t, "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=goreleaser", build.Ldflags[0])
+	require.Equal(t, "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=go-publisher", build.Ldflags[0])
 }
 
 func TestDefaultBuildID(t *testing.T) {
@@ -506,7 +506,7 @@ func TestDefaultPartialBuilds(t *testing.T) {
 		require.Equal(t, []string{"amd64", "arm64", "386"}, build.Goarch)
 		require.Equal(t, []string{"6"}, build.Goarm)
 		require.Len(t, build.Ldflags, 1)
-		require.Equal(t, "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=goreleaser", build.Ldflags[0])
+		require.Equal(t, "-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=go-publisher", build.Ldflags[0])
 	})
 	t.Run("build1", func(t *testing.T) {
 		build := ctx.Config.Builds[1]

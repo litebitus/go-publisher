@@ -550,7 +550,7 @@ func TestTagFromCI(t *testing.T) {
 	}{
 		{expected: "v0.0.2"},
 		{
-			envs:     map[string]string{"GORELEASER_CURRENT_TAG": "v0.0.2"},
+			envs:     map[string]string{"GO_PUBLISHER_CURRENT_TAG": "v0.0.2"},
 			expected: "v0.0.2",
 		},
 	} {
@@ -570,7 +570,7 @@ func TestTagFromCINotInRepository(t *testing.T) {
 	testlib.GitRemoteAdd(t, "git@github.com:foo/bar.git")
 	testlib.GitCommit(t, "commit1")
 	testlib.GitTag(t, "v0.0.1")
-	t.Setenv("GORELEASER_CURRENT_TAG", "v0.0.2")
+	t.Setenv("GO_PUBLISHER_CURRENT_TAG", "v0.0.2")
 
 	ctx := testctx.Wrap(t.Context(), testctx.Skip(skips.Validate))
 	testlib.AssertSkipped(t, Pipe{}.Run(ctx))
@@ -586,7 +586,7 @@ func TestTagFromCINotInRepositoryValidates(t *testing.T) {
 	testlib.GitRemoteAdd(t, "git@github.com:foo/bar.git")
 	testlib.GitCommit(t, "commit1")
 	testlib.GitTag(t, "v0.0.1")
-	t.Setenv("GORELEASER_CURRENT_TAG", "v0.0.2")
+	t.Setenv("GO_PUBLISHER_CURRENT_TAG", "v0.0.2")
 
 	ctx := testctx.Wrap(t.Context())
 	err := Pipe{}.Run(ctx)
@@ -624,7 +624,7 @@ func TestPreviousTagFromCI(t *testing.T) {
 	}{
 		{expected: "v0.0.1"},
 		{
-			envs:     map[string]string{"GORELEASER_PREVIOUS_TAG": "v0.0.2"},
+			envs:     map[string]string{"GO_PUBLISHER_PREVIOUS_TAG": "v0.0.2"},
 			expected: "v0.0.2",
 		},
 	} {

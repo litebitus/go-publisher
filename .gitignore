@@ -1,4 +1,5 @@
 .schema-assets/
+node_modules/
 dist/
 !internal/pipe/dist
 bin/

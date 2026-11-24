@@ -124,11 +124,11 @@ func TestGiteaTemplateDownloadURL(t *testing.T) {
 		},
 		{
 			name:   "download_url_template",
-			apiURL: "{{ .Env.GORELEASER_TEST_GITEA_URLS_API }}",
+			apiURL: "{{ .Env.GO_PUBLISHER_TEST_GITEA_URLS_API }}",
 		},
 		{
 			name:    "download_url_template_invalid_value",
-			apiURL:  "{{ .Env.GORELEASER_NOT_EXISTS }}",
+			apiURL:  "{{ .Env.GO_PUBLISHER_NOT_EXISTS }}",
 			wantErr: true,
 		},
 		{
@@ -140,7 +140,7 @@ func TestGiteaTemplateDownloadURL(t *testing.T) {
 
 	for _, tt := range tests {
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
-			Env: []string{"GORELEASER_TEST_GITEA_URLS_API=https://gitea.com/api/v1"},
+			Env: []string{"GO_PUBLISHER_TEST_GITEA_URLS_API=https://gitea.com/api/v1"},
 			GiteaURLs: config.GiteaURLs{
 				API: tt.apiURL,
 			},

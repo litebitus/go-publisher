@@ -5,7 +5,7 @@ Builds and publishes releases of Go projects, monorepo modules on prefixed tags 
 ## Features
 
 - Everything GoReleaser's open-source edition does: builds, archives, checksums, releases on GitHub, GitLab and Gitea, packages and package managers, container images, signing and SBOMs.
-- A GoReleaser configuration works once it is named `.gopublisher.yml`: the same `version: 2` schema and the same `GORELEASER_*` environment variables.
+- A GoReleaser configuration works once it is named `.gopublisher.yml`: the same `version: 2` schema, with GoReleaser's `GORELEASER_*` environment variables named `GO_PUBLISHER_*`.
 - `git.tag_prefix` releases a module from its own prefixed tags, such as `mock-module/v1.2.3`, beside the repository's other tags: the current and previous tags carry the prefix, and the version is the tag without it.
 - A GoReleaser Pro configuration runs with its Pro-only features ignored.
 
@@ -55,12 +55,12 @@ The schemas are in [schemas/](schemas), one file per minor, and what each minor 
 
 ## Development
 
-Go builds and tests the repo.
+Go and Node build and test the repo.
 
 | Target | Does |
 |---|---|
 | `make build` | runs the tests, then builds `bin/go-publisher` |
-| `make test` | `go vet`, a `gofmt` check, and the Go tests with the race detector and coverage |
+| `make test` | `go vet`, a `gofmt` check, the Go tests with the race detector and coverage, and the schemas loaded in the YAML DSL standard's JavaScript reader |
 
 The packagers' tests run their tools, such as snapcraft, flatpak, Zig, cosign and syft; the `Test` workflow installs them.
 

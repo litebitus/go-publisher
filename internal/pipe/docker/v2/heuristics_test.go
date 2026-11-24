@@ -58,7 +58,7 @@ func TestFindRootProjectExtraFiles(t *testing.T) {
 }
 
 func TestFindRootProjectExtraFiles_EnvDisable(t *testing.T) {
-	t.Setenv("GORELEASER_NO_SLOW_DOCKER_WARN", "1")
+	t.Setenv("GO_PUBLISHER_NO_SLOW_DOCKER_WARN", "1")
 	result := findRootProjectExtraFiles([]string{"go.mod", "Cargo.toml"})
 	require.Nil(t, result)
 }

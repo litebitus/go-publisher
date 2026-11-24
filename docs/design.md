@@ -18,7 +18,7 @@ It adds what a monorepo needs: a module is released from its own prefixed tags, 
 The configuration is `.gopublisher.yml`, or the file `--config` names; `init` writes `.gopublisher.yml`. It keeps GoReleaser's:
 
 - `version: 2`, the format a configuration states.
-- The `GORELEASER_*` environment variables, such as `GORELEASER_CURRENT_TAG`.
+- Its environment variables, prefixed `GO_PUBLISHER_` in place of `GORELEASER_`, such as `GO_PUBLISHER_CURRENT_TAG`.
 
 A configuration is YAML 1.2. Anchors and aliases are read; the merge key `<<` belongs to YAML 1.1 and is an ordinary key, so a configuration that writes one is refused.
 

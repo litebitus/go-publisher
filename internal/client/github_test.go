@@ -95,12 +95,12 @@ func TestNewGitHubClient(t *testing.T) {
 		githubURL := "https://github.mycompany.com"
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 			Env: []string{
-				fmt.Sprintf("GORELEASER_TEST_GITHUB_URLS_API=%s", githubURL),
-				fmt.Sprintf("GORELEASER_TEST_GITHUB_URLS_UPLOAD=%s", githubURL),
+				fmt.Sprintf("GO_PUBLISHER_TEST_GITHUB_URLS_API=%s", githubURL),
+				fmt.Sprintf("GO_PUBLISHER_TEST_GITHUB_URLS_UPLOAD=%s", githubURL),
 			},
 			GitHubURLs: config.GitHubURLs{
-				API:    "{{ .Env.GORELEASER_TEST_GITHUB_URLS_API }}",
-				Upload: "{{ .Env.GORELEASER_TEST_GITHUB_URLS_UPLOAD }}",
+				API:    "{{ .Env.GO_PUBLISHER_TEST_GITHUB_URLS_API }}",
+				Upload: "{{ .Env.GO_PUBLISHER_TEST_GITHUB_URLS_UPLOAD }}",
 			},
 		})
 
@@ -114,7 +114,7 @@ func TestNewGitHubClient(t *testing.T) {
 		t.Parallel()
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 			GitHubURLs: config.GitHubURLs{
-				API: "{{ .Env.GORELEASER_NOT_EXISTS }}",
+				API: "{{ .Env.GO_PUBLISHER_NOT_EXISTS }}",
 			},
 		})
 
@@ -127,7 +127,7 @@ func TestNewGitHubClient(t *testing.T) {
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 			GitHubURLs: config.GitHubURLs{
 				API:    "https://github.mycompany.com/api",
-				Upload: "{{ .Env.GORELEASER_NOT_EXISTS }}",
+				Upload: "{{ .Env.GO_PUBLISHER_NOT_EXISTS }}",
 			},
 		})
 
@@ -231,12 +231,12 @@ func TestGitHubReleaseURLTemplate(t *testing.T) {
 		},
 		{
 			name:            "download_url_template",
-			downloadURL:     "{{ .Env.GORELEASER_TEST_GITHUB_URLS_DOWNLOAD }}",
+			downloadURL:     "{{ .Env.GO_PUBLISHER_TEST_GITHUB_URLS_DOWNLOAD }}",
 			wantDownloadURL: "https://github.mycompany.com/owner/name/releases/download/{{ urlPathEscape .Tag }}/{{ .ArtifactName }}",
 		},
 		{
 			name:        "download_url_template_invalid_value",
-			downloadURL: "{{ .Env.GORELEASER_NOT_EXISTS }}",
+			downloadURL: "{{ .Env.GO_PUBLISHER_NOT_EXISTS }}",
 			wantErr:     true,
 		},
 		{
@@ -251,7 +251,7 @@ func TestGitHubReleaseURLTemplate(t *testing.T) {
 			t.Parallel()
 			ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 				Env: []string{
-					"GORELEASER_TEST_GITHUB_URLS_DOWNLOAD=https://github.mycompany.com",
+					"GO_PUBLISHER_TEST_GITHUB_URLS_DOWNLOAD=https://github.mycompany.com",
 				},
 				GitHubURLs: config.GitHubURLs{
 					Download: tt.downloadURL,

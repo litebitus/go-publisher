@@ -85,7 +85,7 @@ func TestCanonicalArchitectures(t *testing.T) {
 			ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 				Dist: filepath.Join(dir, "dist"),
 				Env: []string{
-					"GORELEASER_FAKE_BINARY=proj",
+					"GO_PUBLISHER_FAKE_BINARY=proj",
 				},
 				Builds: []config.Build{{
 					ID:      "default",
@@ -158,9 +158,9 @@ func main() {
 		}
 	}
 
-	name := os.Getenv("GORELEASER_FAKE_BINARY")
+	name := os.Getenv("GO_PUBLISHER_FAKE_BINARY")
 	if name == "" {
-		panic("GORELEASER_FAKE_BINARY is required")
+		panic("GO_PUBLISHER_FAKE_BINARY is required")
 	}
 
 	var path string

@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	envKey         = "GORELEASER_EXPERIMENTAL"
+	envKey         = "GO_PUBLISHER_EXPERIMENTAL"
 	defaultGOARMv7 = "defaultgoarm"
 )
 

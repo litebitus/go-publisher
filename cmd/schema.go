@@ -27,7 +27,8 @@ func newSchemaCmd() *schemaCmd {
 		Args:              cobra.NoArgs,
 		ValidArgsFunction: cobra.NoFileCompletions,
 		RunE: func(*cobra.Command, []string) error {
-			schema := jsonschema.Reflect(&config.Project{})
+			reflector := jsonschema.Reflector{CommentMap: config.FieldDescriptions}
+			schema := reflector.Reflect(&config.Project{})
 			schema.Description = "go-publisher configuration definition file"
 			bts, err := json.MarshalIndent(schema, "	", "	")
 			if err != nil {

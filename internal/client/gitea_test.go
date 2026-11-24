@@ -114,10 +114,10 @@ func (s *GetInstanceURLSuite) TestTemplate() {
 	rootURL := "https://gitea.mycompany.com"
 	ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 		Env: []string{
-			fmt.Sprintf("GORELEASER_TEST_GITAEA_URLS_API=%s", rootURL),
+			fmt.Sprintf("GO_PUBLISHER_TEST_GITAEA_URLS_API=%s", rootURL),
 		},
 		GiteaURLs: config.GiteaURLs{
-			API: "{{ .Env.GORELEASER_TEST_GITAEA_URLS_API }}",
+			API: "{{ .Env.GO_PUBLISHER_TEST_GITAEA_URLS_API }}",
 		},
 	})
 
@@ -130,7 +130,7 @@ func (s *GetInstanceURLSuite) TestTemplateMissingValue() {
 	t := s.T()
 	ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 		GiteaURLs: config.GiteaURLs{
-			API: "{{ .Env.GORELEASER_NOT_EXISTS }}",
+			API: "{{ .Env.GO_PUBLISHER_NOT_EXISTS }}",
 		},
 	})
 
@@ -739,12 +739,12 @@ func TestGiteaReleaseURLTemplate(t *testing.T) {
 		},
 		{
 			name:            "download_url_template",
-			downloadURL:     "{{ .Env.GORELEASER_TEST_GITEA_URLS_DOWNLOAD }}",
+			downloadURL:     "{{ .Env.GO_PUBLISHER_TEST_GITEA_URLS_DOWNLOAD }}",
 			wantDownloadURL: "https://gitea.mycompany.com/owner/name/releases/download/{{ urlPathEscape .Tag }}/{{ .ArtifactName }}",
 		},
 		{
 			name:        "download_url_template_invalid_value",
-			downloadURL: "{{ .Env.GORELEASER_NOT_EXISTS }}",
+			downloadURL: "{{ .Env.GO_PUBLISHER_NOT_EXISTS }}",
 			wantErr:     true,
 		},
 		{
@@ -760,7 +760,7 @@ func TestGiteaReleaseURLTemplate(t *testing.T) {
 			t.Parallel()
 			ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 				Env: []string{
-					"GORELEASER_TEST_GITEA_URLS_DOWNLOAD=https://gitea.mycompany.com",
+					"GO_PUBLISHER_TEST_GITEA_URLS_DOWNLOAD=https://gitea.mycompany.com",
 				},
 				GiteaURLs: config.GiteaURLs{
 					API:      srv.URL,

@@ -16,7 +16,7 @@ import (
 
 func isolateEnv(tb testing.TB) {
 	tb.Helper()
-	for _, key := range []string{"GITHUB_TOKEN", "GITEA_TOKEN", "GITLAB_TOKEN", "GORELEASER_FORCE_TOKEN"} {
+	for _, key := range []string{"GITHUB_TOKEN", "GITEA_TOKEN", "GITLAB_TOKEN", "GO_PUBLISHER_FORCE_TOKEN"} {
 		tb.Setenv(key, "")
 	}
 	home := tb.TempDir()
@@ -35,9 +35,9 @@ func TestSetDefaultTokenFiles(t *testing.T) {
 	t.Run("empty config", func(t *testing.T) {
 		ctx := testctx.Wrap(t.Context())
 		setDefaultTokenFiles(ctx)
-		require.Equal(t, "~/.config/goreleaser/github_token", ctx.Config.EnvFiles.GitHubToken)
-		require.Equal(t, "~/.config/goreleaser/gitlab_token", ctx.Config.EnvFiles.GitLabToken)
-		require.Equal(t, "~/.config/goreleaser/gitea_token", ctx.Config.EnvFiles.GiteaToken)
+		require.Equal(t, "~/.config/go-publisher/github_token", ctx.Config.EnvFiles.GitHubToken)
+		require.Equal(t, "~/.config/go-publisher/gitlab_token", ctx.Config.EnvFiles.GitLabToken)
+		require.Equal(t, "~/.config/go-publisher/gitea_token", ctx.Config.EnvFiles.GiteaToken)
 	})
 	t.Run("custom config config", func(t *testing.T) {
 		cfg := "what"
@@ -89,21 +89,21 @@ func TestForceToken(t *testing.T) {
 	isolateEnv(t)
 	t.Run("github", func(t *testing.T) {
 		t.Setenv("GITHUB_TOKEN", "fake")
-		t.Setenv("GORELEASER_FORCE_TOKEN", "github")
+		t.Setenv("GO_PUBLISHER_FORCE_TOKEN", "github")
 		ctx := testctx.Wrap(t.Context())
 		require.NoError(t, Pipe{}.Run(ctx))
 		require.Equal(t, context.TokenTypeGitHub, ctx.TokenType)
 	})
 	t.Run("gitlab", func(t *testing.T) {
 		t.Setenv("GITLAB_TOKEN", "fake")
-		t.Setenv("GORELEASER_FORCE_TOKEN", "gitlab")
+		t.Setenv("GO_PUBLISHER_FORCE_TOKEN", "gitlab")
 		ctx := testctx.Wrap(t.Context())
 		require.NoError(t, Pipe{}.Run(ctx))
 		require.Equal(t, context.TokenTypeGitLab, ctx.TokenType)
 	})
 	t.Run("gitea", func(t *testing.T) {
 		t.Setenv("GITEA_TOKEN", "fake")
-		t.Setenv("GORELEASER_FORCE_TOKEN", "gitea")
+		t.Setenv("GO_PUBLISHER_FORCE_TOKEN", "gitea")
 		ctx := testctx.Wrap(t.Context())
 		require.NoError(t, Pipe{}.Run(ctx))
 		require.Equal(t, context.TokenTypeGitea, ctx.TokenType)
@@ -129,7 +129,7 @@ func TestForceTokenIgnoresExcludedTokenFileErrors(t *testing.T) {
 	t.Run("environment selector", func(t *testing.T) {
 		isolateEnv(t)
 		t.Setenv("GITHUB_TOKEN", "fake")
-		t.Setenv("GORELEASER_FORCE_TOKEN", "github")
+		t.Setenv("GO_PUBLISHER_FORCE_TOKEN", "github")
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 			EnvFiles: config.EnvFiles{
 				GitLabToken: t.TempDir(),

@@ -28,7 +28,7 @@ var projectRootMarkers = map[string]struct{}{
 }
 
 func findRootProjectExtraFiles(extraFiles []string) []string {
-	if os.Getenv("GORELEASER_NO_SLOW_DOCKER_WARN") != "" {
+	if os.Getenv("GO_PUBLISHER_NO_SLOW_DOCKER_WARN") != "" {
 		return nil
 	}
 	found := map[string]struct{}{}

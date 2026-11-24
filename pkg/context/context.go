@@ -159,7 +159,7 @@ func ToEnv(env []string) Env {
 		if !ok || k == "" {
 			continue
 		}
-		if k == "GORELEASER_EXPERIMENTAL" {
+		if k == "GO_PUBLISHER_EXPERIMENTAL" {
 			os.Setenv(k, v)
 		}
 		r[k] = v

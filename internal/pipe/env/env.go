@@ -42,13 +42,13 @@ func (Pipe) String() string {
 func setDefaultTokenFiles(ctx *context.Context) {
 	env := &ctx.Config.EnvFiles
 	if env.GitHubToken == "" {
-		env.GitHubToken = "~/.config/goreleaser/github_token"
+		env.GitHubToken = "~/.config/go-publisher/github_token"
 	}
 	if env.GitLabToken == "" {
-		env.GitLabToken = "~/.config/goreleaser/gitlab_token"
+		env.GitLabToken = "~/.config/go-publisher/gitlab_token"
 	}
 	if env.GiteaToken == "" {
-		env.GiteaToken = "~/.config/goreleaser/gitea_token"
+		env.GiteaToken = "~/.config/go-publisher/gitea_token"
 	}
 }
 
@@ -72,7 +72,7 @@ func (Pipe) Run(ctx *context.Context) error {
 
 	forceToken := ctx.Config.ForceToken
 	if forceToken == "" {
-		forceToken = os.Getenv("GORELEASER_FORCE_TOKEN")
+		forceToken = os.Getenv("GO_PUBLISHER_FORCE_TOKEN")
 	}
 	switch strings.ToLower(forceToken) {
 	case "github":

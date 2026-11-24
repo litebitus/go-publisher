@@ -11,8 +11,8 @@ import (
 	"github.com/litebitus/go-publisher/internal/yaml"
 )
 
-// VersionError will happen if the goreleaser config file version does not
-// match the current GoReleaser version.
+// VersionError will happen if the configuration file version does not
+// match the one go-publisher supports.
 type VersionError struct {
 	current int
 }

@@ -62,12 +62,12 @@ func TestGitLabReleaseURLTemplate(t *testing.T) {
 		{
 			name:            "download_url_template",
 			repo:            repo,
-			downloadURL:     "{{ .Env.GORELEASER_TEST_GITLAB_URLS_DOWNLOAD }}",
+			downloadURL:     "{{ .Env.GO_PUBLISHER_TEST_GITLAB_URLS_DOWNLOAD }}",
 			wantDownloadURL: "https://gitlab.mycompany.com/owner/name/-/releases/{{ urlPathEscape .Tag }}/downloads/{{ .ArtifactName }}",
 		},
 		{
 			name:        "download_url_template_invalid_value",
-			downloadURL: "{{ .Eenv.GORELEASER_NOT_EXISTS }}",
+			downloadURL: "{{ .Eenv.GO_PUBLISHER_NOT_EXISTS }}",
 			wantErr:     true,
 		},
 		{
@@ -82,7 +82,7 @@ func TestGitLabReleaseURLTemplate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 				Env: []string{
-					"GORELEASER_TEST_GITLAB_URLS_DOWNLOAD=https://gitlab.mycompany.com",
+					"GO_PUBLISHER_TEST_GITLAB_URLS_DOWNLOAD=https://gitlab.mycompany.com",
 				},
 				GitLabURLs: config.GitLabURLs{
 					Download: tt.downloadURL,
@@ -130,8 +130,8 @@ func TestGitLabURLsAPITemplate(t *testing.T) {
 			gitlabURLs := config.GitLabURLs{}
 
 			if tt.apiURL != "" {
-				envs = append(envs, fmt.Sprintf("GORELEASER_TEST_GITLAB_URLS_API=%s", tt.apiURL))
-				gitlabURLs.API = "{{ .Env.GORELEASER_TEST_GITLAB_URLS_API }}"
+				envs = append(envs, fmt.Sprintf("GO_PUBLISHER_TEST_GITLAB_URLS_API=%s", tt.apiURL))
+				gitlabURLs.API = "{{ .Env.GO_PUBLISHER_TEST_GITLAB_URLS_API }}"
 			}
 
 			ctx := testctx.WrapWithCfg(t.Context(), config.Project{
@@ -148,7 +148,7 @@ func TestGitLabURLsAPITemplate(t *testing.T) {
 	t.Run("no_env_specified", func(t *testing.T) {
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 			GitLabURLs: config.GitLabURLs{
-				API: "{{ .Env.GORELEASER_NOT_EXISTS }}",
+				API: "{{ .Env.GO_PUBLISHER_NOT_EXISTS }}",
 			},
 		})
 
@@ -186,12 +186,12 @@ func TestGitLabURLsDownloadTemplate(t *testing.T) {
 		},
 		{
 			name:        "download_url_template",
-			downloadURL: "{{ .Env.GORELEASER_TEST_GITLAB_URLS_DOWNLOAD }}",
+			downloadURL: "{{ .Env.GO_PUBLISHER_TEST_GITLAB_URLS_DOWNLOAD }}",
 			wantURL:     "https://gitlab.mycompany.com/",
 		},
 		{
 			name:        "download_url_template_invalid_value",
-			downloadURL: "{{ .Eenv.GORELEASER_NOT_EXISTS }}",
+			downloadURL: "{{ .Eenv.GO_PUBLISHER_NOT_EXISTS }}",
 			wantErrIs:   `map has no entry for key "Eenv"`,
 		},
 		{
@@ -263,7 +263,7 @@ func TestGitLabURLsDownloadTemplate(t *testing.T) {
 				ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 					ProjectName: "projectname",
 					Env: []string{
-						"GORELEASER_TEST_GITLAB_URLS_DOWNLOAD=https://gitlab.mycompany.com",
+						"GO_PUBLISHER_TEST_GITLAB_URLS_DOWNLOAD=https://gitlab.mycompany.com",
 					},
 					Release: config.Release{
 						GitLab: config.Repo{

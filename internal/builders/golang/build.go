@@ -118,7 +118,7 @@ func (b *Builder) WithDefaults(build config.Build) (config.Build, error) {
 		build.Dir = "."
 	}
 	if len(build.Ldflags) == 0 {
-		build.Ldflags = []string{"-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=goreleaser"}
+		build.Ldflags = []string{"-s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}} -X main.builtBy=go-publisher"}
 	}
 
 	_ = warnIfTargetsAndOtherOptionTogether(build)

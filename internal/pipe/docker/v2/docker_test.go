@@ -569,7 +569,7 @@ func TestDoBuildEnvPrecedence(t *testing.T) {
 			writeDockerV2TestCommand(t, binDir)
 			t.Setenv("PATH", binDir+string(os.PathListSeparator)+os.Getenv("PATH"))
 
-			key := "GORELEASER_TEST_DOCKER_V2_ENV_" + strings.ToUpper(strings.ReplaceAll(name, "-", "_"))
+			key := "GO_PUBLISHER_TEST_DOCKER_V2_ENV_" + strings.ToUpper(strings.ReplaceAll(name, "-", "_"))
 			unsetEnv(t, key)
 			if tt.ambient != "" {
 				t.Setenv(key, tt.ambient)

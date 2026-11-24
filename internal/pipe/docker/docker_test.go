@@ -60,7 +60,7 @@ func TestRunCommandEnvPrecedence(t *testing.T) {
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			key := "GORELEASER_TEST_DOCKER_ENV_" + strings.ToUpper(strings.ReplaceAll(name, "-", "_"))
+			key := "GO_PUBLISHER_TEST_DOCKER_ENV_" + strings.ToUpper(strings.ReplaceAll(name, "-", "_"))
 			unsetEnv(t, key)
 			if tt.ambient != "" {
 				t.Setenv(key, tt.ambient)
