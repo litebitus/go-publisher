@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -19,6 +20,13 @@ type Git struct {
 	TagSort          string   `yaml:"tag_sort,omitempty" json:"tag_sort,omitempty" jsonschema:"enum=-version:refname,enum=-version:creatordate,default=-version:refname"`
 	PrereleaseSuffix string   `yaml:"prerelease_suffix,omitempty" json:"prerelease_suffix,omitempty"`
 	IgnoreTags       []string `yaml:"ignore_tags,omitempty" json:"ignore_tags,omitempty"`
+	TagPrefix        string   `yaml:"tag_prefix,omitempty" json:"tag_prefix,omitempty"`
+}
+
+// TagWithoutPrefix is the tag with TagPrefix removed: the part that holds the
+// version.
+func (g Git) TagWithoutPrefix(tag string) string {
+	return strings.TrimPrefix(tag, g.TagPrefix)
 }
 
 // GitHubURLs holds the URLs to be used when using github enterprise.

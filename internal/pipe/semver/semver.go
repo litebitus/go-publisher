@@ -21,7 +21,7 @@ func (Pipe) String() string {
 
 // Run parses the tag and populates the semantic-version fields.
 func (Pipe) Run(ctx *context.Context) error {
-	sv, err := semver.NewVersion(ctx.Git.CurrentTag)
+	sv, err := semver.NewVersion(ctx.Config.Git.TagWithoutPrefix(ctx.Git.CurrentTag))
 	if err != nil {
 		if skips.Any(ctx, skips.Validate) {
 			log.WithError(err).

@@ -57,7 +57,7 @@ func (Pipe) Run(ctx *context.Context) error {
 		WithField("previous", cmp.Or(info.PreviousTag, "<unknown>")).
 		WithField("current", info.CurrentTag).
 		Info("using tags")
-	ctx.Version = strings.TrimPrefix(ctx.Git.CurrentTag, "v")
+	ctx.Version = strings.TrimPrefix(ctx.Config.Git.TagWithoutPrefix(ctx.Git.CurrentTag), "v")
 	if err := version.Check(ctx.Version); err != nil {
 		return err
 	}
@@ -136,6 +136,10 @@ func getGitInfo(ctx *context.Context) (context.GitInfo, error) {
 
 	tag, err := getTag(ctx, excluding)
 	if err != nil {
+		noTag := ErrNoTag
+		if prefix := ctx.Config.Git.TagPrefix; prefix != "" {
+			noTag = fmt.Errorf("no tag starts with %q: %w", prefix, ErrNoTag)
+		}
 		return context.GitInfo{
 			Branch:      branch,
 			Commit:      full,
@@ -147,7 +151,7 @@ func getGitInfo(ctx *context.Context) (context.GitInfo, error) {
 			CurrentTag:  "v0.0.0",
 			Summary:     summary,
 			Dirty:       CheckDirty(ctx) != nil,
-		}, ErrNoTag
+		}, noTag
 	}
 
 	subject, contents, body, err := getTagContents(ctx, tag)
@@ -342,6 +346,9 @@ func gitTagsPointingAt(ctx *context.Context, ref string) ([]string, error) {
 		"--sort",
 		ctx.Config.Git.TagSort,
 	)
+	if prefix := ctx.Config.Git.TagPrefix; prefix != "" {
+		args = append(args, "--list", prefix+"*")
+	}
 	return git.CleanAllLines(git.Run(ctx, args...))
 }
 
@@ -351,6 +358,9 @@ func gitDescribe(ctx *context.Context, ref string, excluding []string) (string, 
 		"--tags",
 		"--abbrev=0",
 		ref,
+	}
+	if prefix := ctx.Config.Git.TagPrefix; prefix != "" {
+		args = append(args, "--match="+prefix+"*")
 	}
 	for _, exclude := range excluding {
 		args = append(args, "--exclude="+exclude)

@@ -6,6 +6,7 @@ import (
 	"github.com/litebitus/go-publisher/internal/skips"
 	"github.com/litebitus/go-publisher/internal/testctx"
 	"github.com/litebitus/go-publisher/internal/testlib"
+	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/litebitus/go-publisher/pkg/context"
 	"github.com/stretchr/testify/require"
 )
@@ -23,6 +24,23 @@ func TestValidSemver(t *testing.T) {
 		Patch:      2,
 		Prerelease: "rc1",
 	}, ctx.Semver)
+}
+
+// With a tag prefix, the version is parsed from the tag without the prefix;
+// a tag that does not start with it is parsed whole.
+func TestPrefixedTagSemver(t *testing.T) {
+	cfg := config.Project{Git: config.Git{TagPrefix: "mock-module/"}}
+	ctx := testctx.WrapWithCfg(t.Context(), cfg, testctx.WithCurrentTag("mock-module/v1.5.2-rc1"))
+	require.NoError(t, Pipe{}.Run(ctx))
+	require.Equal(t, context.Semver{
+		Major:      1,
+		Minor:      5,
+		Patch:      2,
+		Prerelease: "rc1",
+	}, ctx.Semver)
+
+	unprefixed := testctx.WrapWithCfg(t.Context(), cfg, testctx.WithCurrentTag("other-module/v1.5.2"))
+	require.ErrorContains(t, Pipe{}.Run(unprefixed), "failed to parse tag 'other-module/v1.5.2' as semver")
 }
 
 func TestInvalidSemver(t *testing.T) {

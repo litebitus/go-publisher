@@ -353,6 +353,70 @@ func TestTagSortOrderPrerelease(t *testing.T) {
 	require.Equal(t, "v0.0.1", ctx.Git.CurrentTag)
 }
 
+// With a tag prefix, the current and previous tags are the prefixed ones, even
+// where an unprefixed tag points at the same commit, and the version is the
+// tag with the prefix and the v removed.
+func TestTagPrefix(t *testing.T) {
+	testlib.Mktmp(t)
+	testlib.GitInit(t)
+	testlib.GitRemoteAdd(t, "git@github.com:foo/bar.git")
+	testlib.GitCommit(t, "commit1")
+	testlib.GitTag(t, "mock-module/v0.1.0")
+	testlib.GitCommit(t, "commit2")
+	testlib.GitTag(t, "v1.0.0")
+	testlib.GitCommit(t, "commit3")
+	testlib.GitTag(t, "v1.1.0")
+	testlib.GitTag(t, "mock-module/v0.2.0")
+	ctx := testctx.WrapWithCfg(t.Context(), config.Project{
+		Git: config.Git{
+			TagPrefix: "mock-module/",
+		},
+	})
+
+	require.NoError(t, Pipe{}.Run(ctx))
+	require.Equal(t, "mock-module/v0.2.0", ctx.Git.CurrentTag)
+	require.Equal(t, "mock-module/v0.1.0", ctx.Git.PreviousTag)
+	require.Equal(t, "0.2.0", ctx.Version)
+}
+
+// A prefixed tag that is not at HEAD is still found as the current tag.
+func TestTagPrefixNotAtHead(t *testing.T) {
+	testlib.Mktmp(t)
+	testlib.GitInit(t)
+	testlib.GitRemoteAdd(t, "git@github.com:foo/bar.git")
+	testlib.GitCommit(t, "commit1")
+	testlib.GitTag(t, "mock-module/v0.1.0")
+	testlib.GitCommit(t, "commit2")
+	testlib.GitTag(t, "v1.0.0")
+	ctx := testctx.WrapWithCfg(t.Context(), config.Project{
+		Git: config.Git{
+			TagPrefix: "mock-module/",
+		},
+	})
+
+	err := Pipe{}.Run(ctx)
+	require.Equal(t, "mock-module/v0.1.0", ctx.Git.CurrentTag)
+	require.ErrorContains(t, err, "git tag mock-module/v0.1.0 was not made against commit")
+}
+
+// With a tag prefix and no tag carrying it, the run fails, naming the prefix.
+func TestTagPrefixNoMatchingTag(t *testing.T) {
+	testlib.Mktmp(t)
+	testlib.GitInit(t)
+	testlib.GitRemoteAdd(t, "git@github.com:foo/bar.git")
+	testlib.GitCommit(t, "commit1")
+	testlib.GitTag(t, "v1.0.0")
+	ctx := testctx.WrapWithCfg(t.Context(), config.Project{
+		Git: config.Git{
+			TagPrefix: "mock-module/",
+		},
+	})
+
+	err := Pipe{}.Run(ctx)
+	require.ErrorIs(t, err, ErrNoTag)
+	require.ErrorContains(t, err, `no tag starts with "mock-module/"`)
+}
+
 func TestTagIsNotLastCommit(t *testing.T) {
 	testlib.Mktmp(t)
 	testlib.GitInit(t)

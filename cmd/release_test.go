@@ -1,12 +1,15 @@
 package cmd
 
 import (
+	"encoding/json"
+	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/litebitus/go-publisher/internal/pipe/changelog"
 	"github.com/litebitus/go-publisher/internal/skips"
 	"github.com/litebitus/go-publisher/internal/testctx"
+	"github.com/litebitus/go-publisher/internal/testlib"
 	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/litebitus/go-publisher/pkg/context"
 	"github.com/stretchr/testify/require"
@@ -63,6 +66,56 @@ func TestReleaseAutoSnapshotWithProConfig(t *testing.T) {
 		cmd.cmd.SetArgs([]string{"--auto-snapshot", "--skip=publish", "--timeout=1m", "--parallelism=2", "--deprecated"})
 		require.ErrorIs(t, cmd.cmd.Execute(), config.ErrProConfig)
 	})
+}
+
+// A module released from its prefixed tag, beside the repository's own
+// unprefixed tags on the same commit, takes its version from that tag and
+// records the full tag as the release's.
+func TestReleasePrefixedTag(t *testing.T) {
+	mktmp(t)
+	createFile(t, "goreleaser.yml", `version: 2
+git:
+  tag_prefix: mock-module/
+builds:
+- binary: fake
+  goos:
+    - linux
+  goarch:
+    - amd64
+archives:
+- formats: [tar]
+release:
+  github:
+    owner: goreleaser
+    name: fake
+`)
+	createMainGo(t)
+	goModInit(t)
+	testlib.GitInit(t)
+	testlib.GitAdd(t)
+	testlib.GitCommit(t, "first")
+	testlib.GitTag(t, "mock-module/v0.1.0")
+	testlib.GitCommit(t, "second")
+	testlib.GitTag(t, "v1.0.0")
+	testlib.GitTag(t, "mock-module/v0.2.0")
+	testlib.GitRemoteAdd(t, "git@github.com:goreleaser/fake.git")
+
+	cmd := newReleaseCmd()
+	cmd.cmd.SetArgs([]string{"--skip=publish", "--timeout=1m", "--parallelism=2"})
+	require.NoError(t, cmd.cmd.Execute())
+	require.FileExists(t, "dist/fake_0.2.0_checksums.txt")
+
+	content, err := os.ReadFile("dist/metadata.json")
+	require.NoError(t, err)
+	var released struct {
+		Tag         string `json:"tag"`
+		PreviousTag string `json:"previous_tag"`
+		Version     string `json:"version"`
+	}
+	require.NoError(t, json.Unmarshal(content, &released))
+	require.Equal(t, "mock-module/v0.2.0", released.Tag)
+	require.Equal(t, "mock-module/v0.1.0", released.PreviousTag)
+	require.Equal(t, "0.2.0", released.Version)
 }
 
 func TestReleaseInvalidConfig(t *testing.T) {
