@@ -47,7 +47,8 @@ func TestPushDenied(t *testing.T) {
 		require.NoError(t, err, "%s", out)
 	})
 
-	out, err = exec.CommandContext(t.Context(), "docker", "run", "--detach", "--publish", "127.0.0.1::5000", registryImage).CombinedOutput()
+	// On the daemon's network, the daemon reaches it on loopback, on a host or in Docker Desktop's VM.
+	out, err = exec.CommandContext(t.Context(), "docker", "run", "--detach", "--network", "host", registryImage).CombinedOutput()
 	require.NoError(t, err, "%s", out)
 	containerID := strings.TrimSpace(string(out))
 	t.Cleanup(func() {
@@ -68,11 +69,9 @@ func TestPushDenied(t *testing.T) {
 	})
 	scanner := bufio.NewScanner(stdout)
 	require.True(t, scanner.Scan(), "registry exited before readiness: %v", scanner.Err())
-	require.Equal(t, "ready", scanner.Text())
-
-	out, err = exec.CommandContext(t.Context(), "docker", "port", containerID, "5000/tcp").CombinedOutput()
-	require.NoError(t, err, "%s", out)
-	_, port, err := net.SplitHostPort(strings.TrimSpace(string(out)))
+	address, isReady := strings.CutPrefix(scanner.Text(), "ready ")
+	require.True(t, isReady, "registry said %q before readiness", scanner.Text())
+	_, _, err = net.SplitHostPort(address)
 	require.NoError(t, err)
 
 	dockerfile := filepath.Join(dir, "Dockerfile.image")
@@ -81,7 +80,7 @@ func TestPushDenied(t *testing.T) {
 	require.NoError(t, os.WriteFile(binary, []byte("binary"), 0o644))
 	for _, use := range []string{useDocker, useBuildx} {
 		t.Run(use, func(t *testing.T) {
-			image := "localhost:" + port + "/goreleaser/denied:" + use
+			image := address + "/goreleaser/denied:" + use
 			ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 				Dist: t.TempDir(),
 				Dockers: []config.Docker{{

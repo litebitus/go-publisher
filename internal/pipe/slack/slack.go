@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	defaultUsername        = `GoReleaser`
+	defaultUsername        = `go-publisher`
 	defaultMessageTemplate = `{{ .ProjectName }} {{ .Tag }} is out! Check it out at {{ .ReleaseURL }}`
 )
 

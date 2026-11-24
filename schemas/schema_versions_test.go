@@ -51,6 +51,17 @@ func TestTheReleaseAssetsAreEveryMinorAndEachMajorAsItsNewestMinor(t *testing.T)
 	}
 }
 
+// A stated major reads as its newest minor; a major with no schema is refused.
+func TestAMajorReadsAsItsNewestMinor(t *testing.T) {
+	text, minorVersion, err := SchemaFor(2)
+	if err != nil || minorVersion != "2.1" || string(text) == "" {
+		t.Errorf("version 2 reads as %s (%v)", minorVersion, err)
+	}
+	if _, _, err := SchemaFor(1); err == nil || err.Error() != "go-publisher has no schema for version 1" {
+		t.Errorf("a major with no schema: err = %v", err)
+	}
+}
+
 // Files are ordered by version, a minor of ten after a minor of nine, and a
 // file not named for a version is refused.
 func TestSchemaFilesAreReadInVersionOrder(t *testing.T) {

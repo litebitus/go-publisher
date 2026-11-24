@@ -740,8 +740,8 @@ func TestDefault(t *testing.T) {
 			CommitMessageTemplate: defaultCommitMsg,
 			Goamd64:               "v1",
 			CommitAuthor: config.CommitAuthor{
-				Name:  "goreleaserbot",
-				Email: "bot@goreleaser.com",
+				Name:  "github-actions[bot]",
+				Email: "github-actions[bot]@users.noreply.github.com",
 			},
 		}, ctx.Config.AURSources[0])
 	})
@@ -766,8 +766,8 @@ func TestDefault(t *testing.T) {
 			CommitMessageTemplate: defaultCommitMsg,
 			Goamd64:               "v1",
 			CommitAuthor: config.CommitAuthor{
-				Name:  "goreleaserbot",
-				Email: "bot@goreleaser.com",
+				Name:  "github-actions[bot]",
+				Email: "github-actions[bot]@users.noreply.github.com",
 			},
 		}, ctx.Config.AURSources[0])
 	})
@@ -793,8 +793,8 @@ func TestDefault(t *testing.T) {
 			CommitMessageTemplate: defaultCommitMsg,
 			Goamd64:               "v3",
 			CommitAuthor: config.CommitAuthor{
-				Name:  "goreleaserbot",
-				Email: "bot@goreleaser.com",
+				Name:  "github-actions[bot]",
+				Email: "github-actions[bot]@users.noreply.github.com",
 			},
 		}, ctx.Config.AURSources[0])
 	})

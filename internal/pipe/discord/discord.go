@@ -18,9 +18,8 @@ import (
 )
 
 const (
-	defaultAuthor          = `GoReleaser`
+	defaultAuthor          = `go-publisher`
 	defaultColor           = "3888754"
-	defaultIcon            = "https://goreleaser.com/static/avatar.png"
 	defaultMessageTemplate = `{{ .ProjectName }} {{ .Tag }} is out! Check it out at {{ .ReleaseURL }}`
 )
 
@@ -41,9 +40,6 @@ type Config struct {
 func (p Pipe) Default(ctx *context.Context) error {
 	if ctx.Config.Announce.Discord.MessageTemplate == "" {
 		ctx.Config.Announce.Discord.MessageTemplate = defaultMessageTemplate
-	}
-	if ctx.Config.Announce.Discord.IconURL == "" {
-		ctx.Config.Announce.Discord.IconURL = defaultIcon
 	}
 	if ctx.Config.Announce.Discord.Author == "" {
 		ctx.Config.Announce.Discord.Author = defaultAuthor

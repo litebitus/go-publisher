@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	defaultName  = "goreleaserbot"
-	defaultEmail = "bot@goreleaser.com"
+	defaultName  = "github-actions[bot]"
+	defaultEmail = "github-actions[bot]@users.noreply.github.com"
 )
 
 // Get templates the commit author and returns a new [config.CommitAuthor].

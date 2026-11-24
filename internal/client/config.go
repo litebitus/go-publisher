@@ -2,7 +2,7 @@ package client
 
 import "github.com/litebitus/go-publisher/pkg/config"
 
-const prFooter = "###### Automated with [GoReleaser](https://goreleaser.com)"
+const prFooter = "###### Automated with [go-publisher](https://github.com/litebitus/go-publisher)"
 
 // RepoFromRef converts a config.RepoRef into a Repo.
 func RepoFromRef(ref config.RepoRef) Repo {

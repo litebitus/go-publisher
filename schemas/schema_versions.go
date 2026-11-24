@@ -47,6 +47,22 @@ func readMinorSchemas(files fs.FS) ([]minorSchema, error) {
 	return read, nil
 }
 
+// SchemaFor is the schema a configuration's stated major version names, the
+// major's newest minor, and that minor version.
+func SchemaFor(major int) (text []byte, minorVersion string, err error) {
+	minorSchemas, err := readMinorSchemas(schemaFiles)
+	if err != nil {
+		return nil, "", err
+	}
+	for _, schema := range slices.Backward(minorSchemas) {
+		if schema.major == major {
+			text, err := schemaFiles.ReadFile(schema.fileName)
+			return text, schema.version(), err
+		}
+	}
+	return nil, "", fmt.Errorf("go-publisher has no schema for version %d", major)
+}
+
 // ReleaseAssets are the schema files a release attaches, by asset name: every minor's file, and each major's as its newest minor, for a modeline to name.
 func ReleaseAssets() (map[string][]byte, error) {
 	minorSchemas, err := readMinorSchemas(schemaFiles)

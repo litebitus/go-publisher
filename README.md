@@ -9,6 +9,8 @@ Builds and publishes releases of Go projects, monorepo modules on prefixed tags 
 - `git.tag_prefix` releases a module from its own prefixed tags, such as `mock-module/v1.2.3`, beside the repository's other tags: the current and previous tags carry the prefix, and the version is the tag without it.
 - A GoReleaser Pro configuration runs with its Pro-only features ignored.
 
+The design, the configuration and its versions are in [docs/design.md](docs/design.md).
+
 ## Usage
 
 ```sh

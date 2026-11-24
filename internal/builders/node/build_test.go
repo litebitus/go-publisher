@@ -102,6 +102,17 @@ func TestResolveVersionStringRejectsUnsupportedSEARelease(t *testing.T) {
 	require.ErrorContains(t, err, ">= v25.5.0")
 }
 
+// hostNodeTarget is the nodejs.org target of the machine running the test.
+func hostNodeTarget(t *testing.T) string {
+	t.Helper()
+	platform := map[string]string{"darwin": "darwin", "linux": "linux", "windows": "win"}[runtime.GOOS]
+	arch := map[string]string{"amd64": "x64", "arm64": "arm64"}[runtime.GOARCH]
+	if platform == "" || arch == "" {
+		t.Skipf("nodejs.org publishes no node for %s/%s", runtime.GOOS, runtime.GOARCH)
+	}
+	return platform + "-" + arch
+}
+
 func TestBuild(t *testing.T) {
 	t.Parallel()
 	testlib.CheckPath(t, "node")
@@ -110,10 +121,14 @@ func TestBuild(t *testing.T) {
 	require.NoError(t, err)
 	hostVersion := strings.TrimSpace(string(out))
 
+	// nodejs.org's build: a node built as a shared library, such as Homebrew's, cannot build executables.
+	officialNode, err := downloadHostBinary(t.Context(), hostVersion, hostNodeTarget(t), t.TempDir())
+	require.NoError(t, err)
+
 	for _, target := range []string{"darwin-arm64", "linux-x64", "win-x64"} {
 		t.Run(target, func(t *testing.T) {
 			t.Parallel()
-			tool := createFakeNodeAlias(t, "node-"+target)
+			tool := createFakeNodeAlias(t, "node-"+target, officialNode)
 			dir := t.TempDir()
 			require.NoError(t, os.WriteFile(filepath.Join(dir, "index.js"),
 				[]byte(`process.stdout.write("buildsea-ok\n");`), 0o644))
@@ -278,10 +293,8 @@ func TestBuildRejectsUnsupportedHostNode(t *testing.T) {
 	require.ErrorContains(t, err, ">= v25.5.0")
 }
 
-func createFakeNodeAlias(tb testing.TB, name string) string {
+func createFakeNodeAlias(tb testing.TB, name, node string) string {
 	tb.Helper()
-	node, err := exec.LookPath("node")
-	require.NoError(tb, err)
 	return createFakeExecutable(
 		tb, name,
 		fmt.Sprintf("#!/bin/sh\nexec %q \"$@\"\n", node),

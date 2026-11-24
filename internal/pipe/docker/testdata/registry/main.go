@@ -8,11 +8,11 @@ import (
 )
 
 func main() {
-	listener, err := net.Listen("tcp", ":5000")
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("ready")
+	fmt.Println("ready", listener.Addr())
 	log.Fatal(http.Serve(listener, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Docker-Distribution-Api-Version", "registry/2.0")
 		w.Header().Set("Content-Type", "application/json")

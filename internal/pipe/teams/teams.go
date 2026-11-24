@@ -13,7 +13,6 @@ import (
 
 const (
 	defaultColor           = "#2D313E"
-	defaultIcon            = "https://goreleaser.com/static/avatar.png"
 	defaultMessageTemplate = `{{ .ProjectName }} {{ .Tag }} is out! Check it out at {{ .ReleaseURL }}`
 	defaultMessageTitle    = `{{ .ProjectName }} {{ .Tag }} is out!`
 )
@@ -36,9 +35,6 @@ func (p Pipe) Default(ctx *context.Context) error {
 	}
 	if ctx.Config.Announce.Teams.TitleTemplate == "" {
 		ctx.Config.Announce.Teams.TitleTemplate = defaultMessageTitle
-	}
-	if ctx.Config.Announce.Teams.IconURL == "" {
-		ctx.Config.Announce.Teams.IconURL = defaultIcon
 	}
 	if ctx.Config.Announce.Teams.Color == "" {
 		ctx.Config.Announce.Teams.Color = defaultColor

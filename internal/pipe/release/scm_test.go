@@ -71,9 +71,13 @@ func TestSetupGitLab(t *testing.T) {
 
 func TestSetupGitea(t *testing.T) {
 	t.Run("no repo", func(t *testing.T) {
+		testlib.Mktmp(t)
+		testlib.GitInit(t)
+		testlib.GitRemoteAdd(t, "git@gitea.example.com:mock-owner/mock-repo.git")
 		ctx := testctx.Wrap(t.Context())
 		require.NoError(t, setupGitea(ctx))
-		require.Equal(t, "goreleaser", ctx.Config.Release.Gitea.Name)
+		require.Equal(t, "mock-owner", ctx.Config.Release.Gitea.Owner)
+		require.Equal(t, "mock-repo", ctx.Config.Release.Gitea.Name)
 	})
 
 	t.Run("with templates", func(t *testing.T) {
@@ -126,9 +130,13 @@ func TestSetupGitea(t *testing.T) {
 
 func TestSetupGitHub(t *testing.T) {
 	t.Run("no repo", func(t *testing.T) {
+		testlib.Mktmp(t)
+		testlib.GitInit(t)
+		testlib.GitRemoteAdd(t, "git@github.com:mock-owner/mock-repo.git")
 		ctx := testctx.Wrap(t.Context())
 		require.NoError(t, setupGitHub(ctx))
-		require.Equal(t, "goreleaser", ctx.Config.Release.GitHub.Name)
+		require.Equal(t, "mock-owner", ctx.Config.Release.GitHub.Owner)
+		require.Equal(t, "mock-repo", ctx.Config.Release.GitHub.Name)
 	})
 
 	t.Run("with templates", func(t *testing.T) {

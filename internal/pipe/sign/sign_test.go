@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -41,7 +42,12 @@ const (
 )
 
 func TestMain(m *testing.M) {
-	keyring = filepath.Join(os.TempDir(), fmt.Sprintf("gorel_gpg_test.%d", rand.Int()))
+	keyringParent := os.TempDir()
+	if runtime.GOOS != "windows" {
+		// gpg-agent's socket sits in the keyring, and macOS's temp dir makes its path too long for a unix socket.
+		keyringParent = "/tmp"
+	}
+	keyring = filepath.Join(keyringParent, fmt.Sprintf("gorel_gpg_test.%d", rand.Int()))
 	fmt.Println("copying", originKeyring, "to", keyring)
 	if err := gio.Copy(originKeyring, keyring); err != nil {
 		fmt.Printf("failed to copy %s to %s: %s", originKeyring, keyring, err)

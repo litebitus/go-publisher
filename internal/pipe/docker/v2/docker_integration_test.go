@@ -338,6 +338,9 @@ func TestIsDockerDaemonAvailable(t *testing.T) {
 func TestSnapshotNoDaemon(t *testing.T) {
 	testlib.CheckDocker(t)
 	testlib.SkipIfWindows(t, "registry images only available for windows")
+	if driver := getBuildxDriver(t.Context()); driver == "docker" {
+		t.Skip("the docker buildx driver writes every build into the daemon's image store, so a daemon is always present")
+	}
 
 	// Force isDockerDaemonAvailable to return false for this test
 	testForceNoDaemon = true
