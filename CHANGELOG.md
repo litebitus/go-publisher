@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.0.2 — 2026-11-24
+
 - Configuration
   - The configuration is `.gopublisher.yml`, or the file `--config` names; GoReleaser's file names are no longer read, and `init` writes `.gopublisher.yml`.
   - `env_files` reads tokens from `~/.config/go-publisher/` by default, and a Go build's default `ldflags` set `main.builtBy` to `go-publisher`.
