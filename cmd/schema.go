@@ -21,7 +21,7 @@ func newSchemaCmd() *schemaCmd {
 	cmd := &cobra.Command{
 		Use:               "jsonschema",
 		Aliases:           []string{"schema"},
-		Short:             "Outputs goreleaser's JSON schema",
+		Short:             "Outputs go-publisher's JSON schema",
 		SilenceUsage:      true,
 		SilenceErrors:     true,
 		Args:              cobra.NoArgs,
@@ -29,7 +29,7 @@ func newSchemaCmd() *schemaCmd {
 		RunE: func(*cobra.Command, []string) error {
 			schema := jsonschema.Reflect(&config.Project{})
 			schema.Definitions["FileInfo"] = jsonschema.Reflect(&config.FileInfo{})
-			schema.Description = "goreleaser configuration definition file"
+			schema.Description = "go-publisher configuration definition file"
 			bts, err := json.MarshalIndent(schema, "	", "	")
 			if err != nil {
 				return fmt.Errorf("failed to create jsonschema: %w", err)

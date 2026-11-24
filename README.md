@@ -1,99 +1,65 @@
-<p align="center">
-  <img alt="GoReleaser Logo" src="https://avatars2.githubusercontent.com/u/24697112?v=3&s=200" height="200" />
-  <h3 align="center">GoReleaser</h3>
-  <p align="center">Release engineering, simplified.</p>
-  <p align="center">
-    <img height="30" src="https://cdn.simpleicons.org/go/555555/ffffff" alt="Go" />
-    <img height="30" src="https://cdn.simpleicons.org/rust/555555/ffffff" alt="Rust" />
-    <img height="30" src="https://cdn.simpleicons.org/zig/555555/ffffff" alt="Zig" />
-    <img height="30" src="https://cdn.simpleicons.org/typescript/555555/ffffff" alt="TypeScript" />
-    <img height="30" src="https://cdn.simpleicons.org/python/555555/ffffff" alt="Python" />
-  </p>
-</p>
+# go-publisher
 
----
+Builds and publishes releases of Go projects, monorepo modules on prefixed tags included. A fork of [GoReleaser](https://github.com/goreleaser/goreleaser) v2.20.3 by Carlos Alexandro Becker and contributors.
 
-We handle the complexities of releasing so you can focus in building what really
-matters: **your software**.
+## Features
 
-![](https://goreleaser.com/static/goreleaser.svg)
+- Everything GoReleaser's open-source edition does: builds, archives, checksums, releases on GitHub, GitLab and Gitea, packages and package managers, container images, signing and SBOMs.
+- A GoReleaser configuration works as it is: the same file names, the same `version: 2` schema and the same `GORELEASER_*` environment variables.
+- `git.tag_prefix` releases a module from its own prefixed tags, such as `mock-module/v1.2.3`, beside the repository's other tags: the current and previous tags carry the prefix, and the version is the tag without it.
+- A GoReleaser Pro configuration runs with its Pro-only features ignored.
 
----
+## Usage
 
-## Get GoReleaser
+```sh
+go install github.com/litebitus/go-publisher@<version>
+```
 
-- [On your machine](https://goreleaser.com/install/);
-- [On CI/CD systems](https://goreleaser.com/ci/).
+```sh
+go-publisher check
+go-publisher release --snapshot --clean
+go-publisher release --clean
+```
 
-## Documentation
+A module in a monorepo, tagged `mock-module/vX.Y.Z`:
 
-Documentation is hosted live at https://goreleaser.com
+```yaml
+version: 2
+git:
+  tag_prefix: mock-module/
+builds:
+  - dir: mock-module
+```
 
-## Community
+## Published schemas
 
-You have questions, need support and or just want to talk about GoReleaser?
+Every release attaches the configuration's JSON Schemas as assets, for a modeline to name:
 
-Here are ways to get in touch with the GoReleaser community:
+| Schema | Asset | In the latest release |
+|---|---|---|
+| a minor | `go-publisher-v<major>.<minor>.schema.json` | [`go-publisher-v2.1.schema.json`](https://github.com/litebitus/go-publisher/releases/latest/download/go-publisher-v2.1.schema.json) |
+| a major, as its newest minor | `go-publisher-v<major>.schema.json` | [`go-publisher-v2.schema.json`](https://github.com/litebitus/go-publisher/releases/latest/download/go-publisher-v2.schema.json) |
 
-[![Follow on 𝕏](https://img.shields.io/badge/Follow_on_𝕏-000000?style=for-the-badge&logo=x&logoColor=white)](https://twitter.com/goreleaser)
-[![Follow Telegram Channel](https://img.shields.io/badge/Follow_on_Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=%23FFFFFF)](https://t.me/goreleasernews)
-[![GitHub Discussions](https://img.shields.io/badge/Discuss_on_GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/goreleaser/goreleaser/discussions)
+A configuration naming the newest 2.x never needs its modeline edited:
 
-You can find the links above and all others [here](https://goreleaser.com/links/).
+```yaml
+# yaml-language-server: $schema=https://github.com/litebitus/go-publisher/releases/latest/download/go-publisher-v2.schema.json
+version: 2
+```
 
-### Code of Conduct
+The schemas are in [schemas/](schemas), one file per minor, and what each minor adds is in [schemas/CHANGELOG.md](schemas/CHANGELOG.md).
 
-This project adheres to the Contributor Covenant [code of conduct](https://github.com/goreleaser/.github/blob/main/CODE_OF_CONDUCT.md).
-By participating, you are expected to uphold this code.
-We appreciate your contribution.
-Please refer to our [contributing guidelines](CONTRIBUTING.md) for further information.
+## Development
 
-## Badges
+Go builds and tests the repo.
 
-[![Release](https://img.shields.io/github/release/goreleaser/goreleaser.svg?style=for-the-badge)](https://github.com/goreleaser/goreleaser/releases/latest)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=for-the-badge)](/LICENSE.md)
-[![Build status](https://img.shields.io/github/actions/workflow/status/goreleaser/goreleaser/build.yml?style=for-the-badge&branch=main)](https://github.com/goreleaser/goreleaser/actions?workflow=build)
-[![Codecov branch](https://img.shields.io/codecov/c/github/goreleaser/goreleaser/main.svg?style=for-the-badge)](https://codecov.io/gh/goreleaser/goreleaser)
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/goreleaser&style=for-the-badge)](https://artifacthub.io/packages/search?repo=goreleaser)
-[![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=for-the-badge)](http://godoc.org/github.com/goreleaser/goreleaser)
-[![Powered By: GoReleaser](https://img.shields.io/badge/powered%20by-goreleaser-green.svg?style=for-the-badge)](https://github.com/goreleaser)
-[![Backers on Open Collective](https://opencollective.com/goreleaser/backers/badge.svg?style=for-the-badge)](https://opencollective.com/goreleaser/backers/)
-[![Sponsors on Open Collective](https://opencollective.com/goreleaser/sponsors/badge.svg?style=for-the-badge)](https://opencollective.com/goreleaser/sponsors/)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge)](https://conventionalcommits.org)
-[![CII Best Practices](https://img.shields.io/cii/summary/5420?label=openssf%20best%20practices&style=for-the-badge)](https://bestpractices.coreinfrastructure.org/projects/5420)
-[![GoReportCard](https://goreportcard.com/badge/github.com/goreleaser/goreleaser?style=for-the-badge)](https://goreportcard.com/report/github.com/goreleaser/goreleaser)
+| Target | Does |
+|---|---|
+| `make build` | runs the tests, then builds `bin/go-publisher` |
+| `make test` | `go vet`, a `gofmt` check, and the Go tests with the race detector and coverage |
 
-## Contributing
+The packagers' tests run their tools, such as snapcraft, flatpak, Zig, cosign and syft; the `Test` workflow installs them.
 
-This project exists thanks to all the people who contribute.
-[Contribution guide](CONTRIBUTING.md).
+### Releases
 
-## Sponsoring
-
-Does you or your company use GoReleaser?
-
-You can help keep the project bug-free and feature rich by sponsoring the
-project and its maintainers.
-
-You can sponsor GoReleaser via:
-
-- **[GitHub Sponsors](https://github.com/sponsors/caarlos0)**
-- **[OpenCollective](https://opencollective.com/goreleaser)**
-
-A big **thank you** to all current, past, and future sponsors!
-
----
-
-<!-- sponsors:begin -->
-<!-- this list is auto-generated by https://github.com/goreleaser/sponsors -->
-<div align="center">
-  <h2>Our Sponsors</h2>
-  <p align="center"><strong>Diamond</strong><br> <a href="https://serpapi.com/?utm_source=goreleaser&utm_medium=sponsor&utm_campaign=homepage&utm_content=github" target="_blank" rel="noopener sponsored" ><img src="https://github.com/serpapi.png" alt="SerpApi" width="128"/></a></p>
-  <p align="center"><strong>Gold</strong><br> <a href="https://opensource.mercedes-benz.com/?utm_source=goreleaser&utm_medium=sponsor&utm_campaign=homepage&utm_content=github" target="_blank" rel="noopener sponsored" ><img src="https://avatars.githubusercontent.com/u/34240465?s=96&v=4" alt="Mercedes-Benz Group" width="96"/></a> <a href="https://resources.github.com/github-secure-open-source-fund/?utm_source=goreleaser&utm_medium=sponsor&utm_campaign=homepage&utm_content=github" target="_blank" rel="noopener sponsored" ><img src="https://avatars.githubusercontent.com/u/199005812?s=96&v=4" alt="GitHub SecureOSS Fund " width="96"/></a></p>
-  <p align="center"><strong>Silver</strong><br> <a href="https://www.n-ix.com/?utm_source=goreleaser&utm_medium=sponsor&utm_campaign=homepage&utm_content=opencollective" target="_blank" rel="noopener sponsored" ><img src="https://images.opencollective.com/n-ix-ltd/575a7a5/logo.png?height=80" alt="N-iX Ltd" width="80"/></a></p>
-  <p align="center"><strong>Bronze</strong><br> <a href="https://www.conet.de?utm_source=goreleaser&utm_medium=sponsor&utm_campaign=homepage&utm_content=github" target="_blank" rel="noopener sponsored" ><img src="https://avatars.githubusercontent.com/u/35725664?s=64&v=4" alt="conet cloud" width="64"/></a> <a href="https://encore.dev?utm_source=goreleaser&utm_medium=sponsor&utm_campaign=homepage&utm_content=github" target="_blank" rel="noopener sponsored" ><img src="https://avatars.githubusercontent.com/u/50438175?s=64&v=4" alt="Encore" width="64"/></a> <a href="https://www.comet.com/site/?utm_source=goreleaser&utm_medium=sponsor&utm_campaign=homepage&utm_content=github" target="_blank" rel="noopener sponsored" ><img src="https://avatars.githubusercontent.com/u/31487821?s=64&v=4" alt="Comet" width="64"/></a> <a href="https://about.gitea.com/?utm_source=goreleaser&utm_medium=sponsor&utm_campaign=homepage&utm_content=opencollective" target="_blank" rel="noopener sponsored" ><img src="https://images.opencollective.com/gitea/bf35c2f/logo.png?height=64" alt="Gitea" width="64"/></a></p>
-  <h3>And many more!</h3>
-  <p>See the full list <a href="https://goreleaser.com/sponsors" target="_blank" rel="noopener sponsored">here</a>.</p>
-</div>
-
-<!-- sponsors:end -->
+The `Release` workflow, dispatched by hand, computes the next version, stamps `CHANGELOG.md` and `schemas/CHANGELOG.md`, tags it, and publishes the archives and the schemas with go-publisher itself.

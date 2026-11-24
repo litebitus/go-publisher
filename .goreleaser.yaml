@@ -2,6 +2,10 @@ version: 2
 
 project_name: go-publisher
 
+before:
+  hooks:
+    - go run ./internal/schemaassets .schema-assets
+
 builds:
   - id: go-publisher
     binary: go-publisher
@@ -31,3 +35,5 @@ checksum:
 
 release:
   prerelease: auto
+  extra_files:
+    - glob: .schema-assets/*.schema.json

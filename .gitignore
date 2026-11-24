@@ -1,3 +1,4 @@
+.schema-assets/
 dist/
 !internal/pipe/dist
 bin/
