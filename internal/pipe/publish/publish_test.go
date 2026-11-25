@@ -3,6 +3,7 @@ package publish
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/hashicorp/go-multierror"
@@ -10,6 +11,7 @@ import (
 	"github.com/litebitus/go-publisher/internal/pipe"
 	"github.com/litebitus/go-publisher/internal/pipe/dockerdigest"
 	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/summary"
 	"github.com/litebitus/go-publisher/internal/testctx"
 	"github.com/litebitus/go-publisher/pkg/config"
 	"github.com/litebitus/go-publisher/pkg/context"
@@ -90,6 +92,32 @@ func TestPublishSuccess(t *testing.T) {
 	require.ErrorAs(t, err, &merr)
 	require.Equal(t, 1, merr.Len())
 	require.True(t, lastStep.ran)
+}
+
+func TestPublishSummaryNamesTheVersionAsTagged(t *testing.T) {
+	summaryPath := filepath.Join(t.TempDir(), "summary.md")
+	t.Setenv("GITHUB_STEP_SUMMARY", summaryPath)
+	ctx := testctx.WrapWithCfg(t.Context(), config.Project{
+		ProjectName: "mock-project",
+		Git:         config.Git{TagPrefix: "mock-module/"},
+	}, testctx.WithCurrentTag("mock-module/v1.2.3"), testctx.WithVersion("1.2.3"))
+
+	require.NoError(t, Pipe{pipeline: []Publisher{summaryPublisher{}}}.Run(ctx))
+
+	bts, err := os.ReadFile(summaryPath)
+	require.NoError(t, err)
+	require.Equal(t, "### Go Publisher Summary\n\n"+
+		"Published `mock-project` `v1.2.3`\n\n"+
+		"- mock artifact\n", string(bts))
+}
+
+// summaryPublisher publishes one entry to the job summary.
+type summaryPublisher struct{}
+
+func (summaryPublisher) String() string { return "mock summary" }
+func (summaryPublisher) Publish(*context.Context) error {
+	summary.Append("mock artifact")
+	return nil
 }
 
 func TestPublishError(t *testing.T) {

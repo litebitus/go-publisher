@@ -86,7 +86,7 @@ func (Pipe) String() string                 { return "publishing" }
 func (Pipe) Skip(ctx *context.Context) bool { return skips.Any(ctx, skips.Publish) }
 
 func (p Pipe) Run(ctx *context.Context) error {
-	summary.Begin(ctx.Config.ProjectName, ctx.Version)
+	summary.Begin(ctx.Config.ProjectName, ctx.Config.Git.TagWithoutPrefix(ctx.Git.CurrentTag))
 	memo := errhandler.Memo{}
 	for _, publisher := range p.pipeline {
 		if err := skip.Maybe(
