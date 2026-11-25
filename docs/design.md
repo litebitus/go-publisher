@@ -73,9 +73,18 @@ The configuration format and go-publisher carry separate versions. The format's 
 - `go install github.com/litebitus/go-publisher@<version>`.
 - The `Release` workflow runs the `Test` workflow first, and tags and publishes only when it passes.
 
+### GitHub Action
+
+`action.yml` installs the go-publisher release its `version` input names, checked against the release's `checksums.txt`, and runs it with `args` in `workdir`.
+
+| Concern | The action |
+|---|---|
+| tags | `action/vX.Y.Z`, apart from go-publisher's own `vX.Y.Z`; its major tag, such as `action/v1`, moves to each release |
+| changelog | `action.CHANGELOG.md` |
+| release | the `Release Action` workflow runs the `Test Action` workflow, stamps the changelog, tags, publishes a GitHub Release that is never the repo's latest, and moves the major tag |
+
 ## TODO
 
 - A `merge` macro, as the YAML DSL standard defines it: a DSL definition whose function table declares the macro, and a loader that reads the expanded document, so a configuration merges a map into another.
 - Remove Windows support: the winget, Chocolatey and Scoop publishers and the `windows` build target.
 - `changelog.paths`, so a module's changelog lists only the commits that touch its paths.
-- A GitHub Action that installs a go-publisher release and runs it in a workflow, as `goreleaser/goreleaser-action` does for GoReleaser.

@@ -3,6 +3,9 @@ version: 2
 
 project_name: go-publisher
 
+git:
+  tag_prefix: v
+
 before:
   hooks:
     - go run ./internal/schemaassets .schema-assets

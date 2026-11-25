@@ -1,0 +1,140 @@
+name: Release Action
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Bump level: auto (from Conventional Commits, never across a major), patch, minor or major."
+        required: true
+        type: choice
+        options: [auto, patch, minor, major]
+        default: patch
+      version:
+        description: "An explicit version, such as v1.2.3, for the first release; empty computes it from bump."
+        required: false
+        type: string
+        default: ""
+      dry_run:
+        description: "Compute and print the next version without changing anything."
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-action
+  cancel-in-progress: false
+
+jobs:
+  test-action:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/test-action.yml
+
+  release:
+    needs: test-action
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Go
+        uses: actions/setup-go@v7.0.0
+        with:
+          go-version-file: go.mod
+
+      - name: Install svu
+        run: go install github.com/caarlos0/svu/v3@v3.4.1
+
+      - name: Compute the next version
+        id: version
+        env:
+          BUMP: ${{ inputs.bump }}
+          OVERRIDE: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          svu_flags=(--tag.pattern "action/v*" --tag.prefix "action/v")
+          if [ -n "$OVERRIDE" ]; then
+            next="action/${OVERRIDE}"
+          else
+            case "$BUMP" in
+              patch|minor|major) next="$(svu "$BUMP" "${svu_flags[@]}")" ;;
+              auto)
+                next="$(svu next "${svu_flags[@]}")"
+                if [ "${next%%.*}" != "$(svu current "${svu_flags[@]}" | cut -d. -f1)" ]; then
+                  next="$(svu minor "${svu_flags[@]}")"
+                fi
+                ;;
+            esac
+          fi
+          current="$(git describe --tags --abbrev=0 --match 'action/v*' 2>/dev/null || echo '(none)')"
+          if [ "$next" = "$current" ]; then
+            echo "no version change ($next); nothing to release" >&2
+            exit 1
+          fi
+          echo "next=$next" >> "$GITHUB_OUTPUT"
+          echo "Current: $current -> Next: $next"
+
+      - name: Check the release before changing anything
+        env:
+          NEXT: ${{ steps.version.outputs.next }}
+        run: |
+          set -euo pipefail
+          if [ -n "$(git ls-remote --tags origin "refs/tags/${NEXT}")" ]; then
+            echo "tag $NEXT already exists on origin" >&2
+            exit 1
+          fi
+          awk '/^## Unreleased$/ { inside = 1; next } /^## / { inside = 0 } inside && NF { found = 1 } END { exit !found }' action.CHANGELOG.md ||
+            { echo "action.CHANGELOG.md has nothing under '## Unreleased' to release as $NEXT" >&2; exit 1; }
+
+      - name: Stamp the changelog, tag and push
+        if: ${{ !inputs.dry_run }}
+        env:
+          NEXT: ${{ steps.version.outputs.next }}
+        run: |
+          set -euo pipefail
+          awk '/^## Unreleased$/ { inside = 1; next } /^## / { inside = 0 } inside' action.CHANGELOG.md > "$RUNNER_TEMP/release-notes.md"
+          export VERSION="${NEXT#action/}" RELEASE_DATE="$(date -u +%Y-%m-%d)"
+          perl -pi -e 's/^## Unreleased$/$&\n\n## $ENV{VERSION} — $ENV{RELEASE_DATE}/' action.CHANGELOG.md
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add action.CHANGELOG.md
+          git commit -m "docs(changelog): ${NEXT}"
+          git tag -a "$NEXT" -m "Release $NEXT"
+          git push --atomic origin "HEAD:${GITHUB_REF_NAME}" "$NEXT"
+
+      - name: Publish the release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEXT: ${{ steps.version.outputs.next }}
+        run: gh release create "$NEXT" --verify-tag --latest=false --title "$NEXT" --notes-file "$RUNNER_TEMP/release-notes.md"
+
+      - name: Move the major tag to the release
+        if: ${{ !inputs.dry_run }}
+        env:
+          NEXT: ${{ steps.version.outputs.next }}
+        run: |
+          set -euo pipefail
+          major="${NEXT%%.*}"
+          git tag -fa "$major" -m "Release $NEXT" "${NEXT}^{commit}"
+          git push origin "+refs/tags/${major}"
+
+      - name: Summary
+        if: ${{ !inputs.dry_run }}
+        env:
+          NEXT: ${{ steps.version.outputs.next }}
+        run: |
+          set -euo pipefail
+          commit="$(git rev-parse --short=7 HEAD)"
+          echo "Released the \`go-publisher\` action \`${NEXT#action/}\` from commit \`${commit}\`." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Dry run summary
+        if: ${{ inputs.dry_run }}
+        run: echo "DRY RUN - would release ${{ steps.version.outputs.next }}"

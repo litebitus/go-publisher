@@ -23,6 +23,17 @@ go-publisher release --snapshot --clean
 go-publisher release --clean
 ```
 
+In a GitHub Actions workflow, the action installs the go-publisher release `version` names and runs it:
+
+```yaml
+- uses: litebitus/go-publisher@action/v1
+  with:
+    version: v1.2.3
+    args: release --clean
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
 A module in a monorepo, tagged `mock-module/vX.Y.Z`:
 
 ```yaml
@@ -66,4 +77,4 @@ The packagers' tests run their tools, such as snapcraft, flatpak, Zig, cosign an
 
 ### Releases
 
-The `Release` workflow, dispatched by hand, computes the next version, stamps `CHANGELOG.md` and `schemas/CHANGELOG.md`, tags it, and publishes the archives and the schemas with go-publisher itself.
+The `Release` workflow, dispatched by hand, computes the next version, stamps `CHANGELOG.md` and `schemas/CHANGELOG.md`, tags it, and publishes the archives and the schemas with go-publisher itself. The `Release Action` workflow releases the action on its own `action/vX.Y.Z` tags, from `action.CHANGELOG.md`.
