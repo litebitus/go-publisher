@@ -4,17 +4,16 @@ Each release is tagged `action/vX.Y.Z`, and its major tag, such as `action/v1`, 
 
 ## Unreleased
 
+- Downloads onto runners: the symlink to a missing file is removed from the repo, which v1.0.2 still carried.
+
 ## v1.0.2 — 2026-11-25
 
-- GitHub Action
-  - Downloads onto runners: the repo no longer carries a symlink to a missing file, which failed the runner's unpacking of the action.
+- Downloads onto runners: the repo no longer carries a symlink to a missing file, which failed the runner's unpacking of the action.
 
 ## v1.0.1 — 2026-11-25
 
-- GitHub Action
-  - Installs the go-publisher release it carries, the newest when the action is released; the `version` input is gone.
+- Installs the go-publisher release it carries, the newest when the action is released; the `version` input is gone.
 
 ## v1.0.0 — 2026-11-25
 
-- GitHub Action
-  - Installs the go-publisher release `version` names, checked against the release's checksums, and runs it with `args` in `workdir`.
+- Installs the go-publisher release `version` names, checked against the release's checksums, and runs it with `args` in `workdir`.
