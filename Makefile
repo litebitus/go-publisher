@@ -14,4 +14,4 @@ test:
 		total = $$3 + 0; printf "coverage %s, floor %s%%\n", $$3, floor; \
 		if (total < floor) { print "coverage is below the floor"; exit 1 } }'
 	npm install --no-audit --no-fund
-	node --test --test-timeout=5000 --test-force-exit schemas/
+	node --test --test-timeout=5000 --test-force-exit 'schemas/*.test.js'
