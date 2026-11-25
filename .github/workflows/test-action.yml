@@ -11,6 +11,11 @@ on:
       - ".github/workflows/test-action.yml"
       - "action.yml"
   workflow_call:
+    inputs:
+      runners:
+        description: The runner labels the action is tested on, as a JSON array.
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -20,10 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner:
-          - macos-26
-          - ubuntu-26.04
-          - ubuntu-26.04-arm
+        runner: ${{ fromJSON(inputs.runners || '["macos-26", "ubuntu-26.04", "ubuntu-26.04-arm"]') }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 10
     steps:

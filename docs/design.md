@@ -82,6 +82,7 @@ The configuration format and go-publisher carry separate versions. The format's 
 | tags | `action/vX.Y.Z`, apart from go-publisher's own `vX.Y.Z`; its major tag, such as `action/v1`, moves to each release |
 | changelog | `action.CHANGELOG.md` |
 | release | the `Release Action` workflow runs the `Test Action` workflow, stamps the changelog, tags, publishes a GitHub Release that is never the repo's latest, and moves the major tag |
+| release gate | the Linux tests must pass; the macOS test must pass once it runs, and a macOS test that gets no runner within 3 minutes is released past with a warning |
 
 ## TODO
 
