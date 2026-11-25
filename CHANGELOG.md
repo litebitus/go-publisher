@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v0.0.3 — 2026-11-25
+
 - Job summary
   - The GitHub Actions job summary opens with `Published <project> <version>` under a Go Publisher Summary heading, and a release lists each of its assets.
 - Node builds
