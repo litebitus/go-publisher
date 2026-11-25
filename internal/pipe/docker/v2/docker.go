@@ -1,4 +1,4 @@
-// Package docker provides the v2 of GoReleaser's docker pipe.
+// Package docker provides the v2 of go-publisher's docker pipe.
 package docker
 
 import (

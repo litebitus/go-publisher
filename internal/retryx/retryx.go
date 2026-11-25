@@ -1,4 +1,4 @@
-// Package retryx provides shared retry configuration for goreleaser.
+// Package retryx provides shared retry configuration for go-publisher.
 package retryx
 
 import (

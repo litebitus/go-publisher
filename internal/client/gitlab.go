@@ -133,9 +133,9 @@ func newGitLab(ctx *context.Context, token string, opts ...gitlab.ClientOptionFu
 }
 
 // versionRetry bounds the GitLab version probe. The probe is best effort: on
-// failure goreleaser only assumes a GitLab older than v17. It must not spend
+// failure go-publisher only assumes a GitLab older than v17. It must not spend
 // the retry budget of the whole release, which defaults to 10 attempts with a
-// 5m max delay, and would leave goreleaser looking wedged for ~25 minutes.
+// 5m max delay, and would leave go-publisher looking wedged for ~25 minutes.
 var versionRetry = config.Retry{
 	Attempts: 3,
 	Delay:    500 * time.Millisecond,

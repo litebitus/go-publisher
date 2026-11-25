@@ -1,4 +1,4 @@
-// Package config contains the model and loader of the goreleaser configuration
+// Package config contains the model and loader of the go-publisher configuration
 // file.
 package config
 

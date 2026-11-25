@@ -1,4 +1,4 @@
-// Package tmpl provides templating utilities for goreleaser.
+// Package tmpl provides templating utilities for go-publisher.
 package tmpl
 
 import (
@@ -582,11 +582,13 @@ func englishJoin(ss []string) string {
 			if i > 1 {
 				b.WriteRune(',')
 			}
-			b.WriteString(" and " + s)
+			b.WriteString(" and ")
+			b.WriteString(s)
 			continue
 		}
 
-		b.WriteString(", " + s)
+		b.WriteString(", ")
+		b.WriteString(s)
 	}
 	return b.String()
 }

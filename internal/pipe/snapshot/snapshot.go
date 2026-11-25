@@ -1,4 +1,4 @@
-// Package snapshot provides the snapshotting functionality to goreleaser.
+// Package snapshot provides the snapshotting functionality to go-publisher.
 package snapshot
 
 import (

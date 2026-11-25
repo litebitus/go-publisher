@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// ErrSnapshotEnabled happens when goreleaser is running in snapshot mode.
+// ErrSnapshotEnabled happens when go-publisher is running in snapshot mode.
 // It usually means that publishing and maybe some validations were skipped.
 var ErrSnapshotEnabled = Skip("disabled during snapshot mode")
 

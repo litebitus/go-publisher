@@ -1,5 +1,5 @@
 // Package deprecate provides simple functions to standardize the output
-// of deprecation notices on goreleaser
+// of deprecation notices on go-publisher
 package deprecate
 
 import (

@@ -29,9 +29,9 @@ var distBaseURL = "https://nodejs.org/dist"
 var httpClient = http.DefaultClient
 
 // defaultRetry is the retry policy applied to every nodejs.org HTTP
-// fetch. It mirrors what the rest of goreleaser uses for transient
+// fetch. It mirrors what the rest of go-publisher uses for transient
 // server errors but is fixed at package scope rather than threaded
-// from ctx.Config.Retry to avoid leaking a goreleaser context
+// from ctx.Config.Retry to avoid leaking a go-publisher context
 // dependency into nodedist.
 //
 //nolint:gochecknoglobals

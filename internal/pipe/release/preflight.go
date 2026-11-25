@@ -17,7 +17,7 @@ type Preflight struct{}
 func (Preflight) String() string { return "release preflight checks" }
 
 func (Preflight) Skip(ctx *context.Context) (bool, error) {
-	// SkipTokenCheck is set by `goreleaser build`, which never publishes a
+	// SkipTokenCheck is set by `go-publisher build`, which never publishes a
 	// release; running the check there would add a needless SCM round-trip
 	// (and could fail) for a purely local build.
 	if ctx.SkipTokenCheck || skips.Any(ctx, skips.Publish) {

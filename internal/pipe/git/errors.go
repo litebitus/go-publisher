@@ -27,7 +27,7 @@ func (e ErrWrongRef) Error() string {
 // but no snapshot-release was requested.
 var ErrNoTag = errors.New("git doesn't contain any tags - either add a tag or use --snapshot")
 
-// ErrNotRepository happens if you try to run goreleaser against a folder
+// ErrNotRepository happens if you try to run go-publisher against a folder
 // which is not a git repository.
 var ErrNotRepository = errors.New("current folder is not a git repository")
 

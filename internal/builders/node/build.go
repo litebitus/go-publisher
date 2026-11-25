@@ -3,7 +3,7 @@
 //
 // The pipeline shells out to whatever `node` is on `PATH` (must be
 // ≥ v25.5 with LIEF) and invokes `node --build-sea sea-config.json`
-// against the per-target Node binary GoReleaser fetches from
+// against the per-target Node binary go-publisher fetches from
 // https://nodejs.org/dist (verifying SHA-256). On macOS targets the
 // produced Mach-O is ad-hoc signed via quill (pure-Go) so it loads on
 // Apple Silicon out of the box; users with a Developer ID can layer

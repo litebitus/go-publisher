@@ -80,5 +80,4 @@ The configuration format and go-publisher carry separate versions. The format's 
 - `changelog.paths`, so a module's changelog lists only the commits that touch its paths.
 - A prefixed `.Tag` where a tag cannot carry a `/`: Docker's default image version `{{.Tag}}`, and the Go module proxy's `module@<tag>`.
 - The `&tmpl.Error{}` expected errors in the brew, cask, krew, sbom, sign, exec and gitea tests.
-- The code comments that name GoReleaser.
 - A GitHub Action that installs a go-publisher release and runs it in a workflow, as `goreleaser/goreleaser-action` does for GoReleaser.

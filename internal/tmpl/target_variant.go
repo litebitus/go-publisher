@@ -49,7 +49,8 @@ func targetVariant(v any) (string, error) {
 		{"_", get(KeyAbi), ""},
 	} {
 		if v.value != "" && v.value != v.def {
-			sb.WriteString(v.prefix + v.value)
+			sb.WriteString(v.prefix)
+			sb.WriteString(v.value)
 		}
 	}
 

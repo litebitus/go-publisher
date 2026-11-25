@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"slices"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/litebitus/go-publisher/internal/tmpl"
@@ -111,8 +112,8 @@ func uninstallString(u config.HomebrewCaskUninstall) string {
 }
 
 // caskTokens expose Homebrew's own install steps tokens as template fields.
-// Homebrew uses the same delimiters as GoReleaser, so without these the user
-// would need to quote every token, e.g. `{{ "{{staged_path}}" }}`.
+// Homebrew uses the same delimiters as go-publisher's templates, so without
+// these the user would need to quote every token, e.g. `{{ "{{staged_path}}" }}`.
 var caskTokens = tmpl.Fields{
 	"StagedPath": "{{staged_path}}",
 	"AppDir":     "{{appdir}}",
@@ -133,9 +134,12 @@ func flightString(stanza, steps, legacy string) string {
 		return ""
 	}
 	var sb strings.Builder
-	sb.WriteString(stanza + " do\n")
+	sb.WriteString(stanza)
+	sb.WriteString(" do\n")
 	for _, line := range lines {
-		sb.WriteString("    " + line + "\n")
+		sb.WriteString("    ")
+		sb.WriteString(line)
+		sb.WriteString("\n")
 	}
 	sb.WriteString("  end")
 	return sb.String()
@@ -166,7 +170,8 @@ func joinGroups(stanza string, groups []string) string {
 		return ""
 	}
 	var sb strings.Builder
-	sb.WriteString(stanza + " ")
+	sb.WriteString(stanza)
+	sb.WriteString(" ")
 	for i, group := range groups {
 		if i > 0 {
 			sb.WriteString("    ")
@@ -182,9 +187,12 @@ func joinGroups(stanza string, groups []string) string {
 
 func groupToS(name string, lines []string) string {
 	var sb strings.Builder
-	sb.WriteString(name + ": [\n")
+	sb.WriteString(name)
+	sb.WriteString(": [\n")
 	for _, l := range lines {
-		sb.WriteString("      " + fmt.Sprintf("%q", l) + ",\n")
+		sb.WriteString("      ")
+		sb.WriteString(strconv.Quote(l))
+		sb.WriteString(",\n")
 	}
 	sb.WriteString("    ]")
 	return sb.String()

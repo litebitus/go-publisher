@@ -1,2 +1,2 @@
-// Package notary provides the goreleaser notarization pipes.
+// Package notary provides the go-publisher notarization pipes.
 package notary

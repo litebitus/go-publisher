@@ -135,7 +135,7 @@ func urlFor(ctx *context.Context, conf config.Blob) (string, error) {
 	return bucketURL, nil
 }
 
-// Takes goreleaser context(which includes artifacts) and bucketURL for
+// Takes go-publisher context(which includes artifacts) and bucketURL for
 // upload to destination (eg: gs://gorelease-bucket) using the given uploader
 // implementation.
 func doUpload(ctx *context.Context, conf config.Blob) error {

@@ -1,4 +1,4 @@
-// Package testlib contains test helpers for goreleaser tests.
+// Package testlib contains test helpers for go-publisher tests.
 package testlib
 
 import (

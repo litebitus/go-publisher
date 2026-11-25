@@ -108,7 +108,7 @@ var BuildPipeline = []Piper{
 	notary.MacOS{},
 }
 
-// BuildCmdPipeline is the pipeline run by goreleaser build.
+// BuildCmdPipeline is the pipeline run by go-publisher build.
 //
 //nolint:gochecknoglobals
 var BuildCmdPipeline = append(

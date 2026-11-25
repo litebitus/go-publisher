@@ -30,7 +30,7 @@ import (
 const (
 	// The API requires install_type and install_enforcement, it does not
 	// default them, so the pipe picks the values that fit a macOS archive
-	// built by GoReleaser.
+	// built by go-publisher.
 	defaultInstallType        = "zip"
 	defaultInstallEnforcement = "install_once"
 	tokenEnvKey               = "IRU_API_TOKEN"

@@ -1,4 +1,4 @@
-// Package changelog provides the release changelog to goreleaser.
+// Package changelog provides the release changelog to go-publisher.
 package changelog
 
 import (

@@ -1,4 +1,4 @@
-// Package gerrors provides error handling for GoReleaser.
+// Package gerrors provides error handling for go-publisher.
 package gerrors
 
 import (

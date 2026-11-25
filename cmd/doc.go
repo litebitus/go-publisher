@@ -1,2 +1,2 @@
-// Package cmd provides the command line interface for goreleaser.
+// Package cmd provides the command line interface for go-publisher.
 package cmd

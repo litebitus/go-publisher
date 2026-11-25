@@ -89,7 +89,7 @@ func TestDockerSignArtifacts(t *testing.T) {
 	// through a shell, because of the redirect. testlib.ShC picks cmd.exe on
 	// windows -- ${signature} is a native path there, and sh reads its
 	// backslashes as escapes, which made the redirect write distfoo.sig next
-	// to dist -- and shellwords splits it the same way goreleaser splits a
+	// to dist -- and shellwords splits it the same way go-publisher splits a
 	// hook, since config.Sign keeps Cmd and Args apart.
 	signer, err := shellwords.Parse(testlib.ShC("echo ${artifact}@${digest} > ${signature}"))
 	require.NoError(t, err)

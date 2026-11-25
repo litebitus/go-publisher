@@ -299,7 +299,7 @@ func fetchBaseImage(ref name.Reference) (build.Result, error) {
 	}
 }
 
-// koVersion returns the version of the ko module GoReleaser was built with,
+// koVersion returns the version of the ko module go-publisher was built with,
 // which ko uses as the creator tool version in generated SBOMs.
 func koVersion() string {
 	info, ok := debug.ReadBuildInfo()

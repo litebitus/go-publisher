@@ -243,7 +243,7 @@ func TestRunPipeWithName(t *testing.T) {
 
 func TestRunPipeMetadata(t *testing.T) {
 	testlib.SkipIfWindows(t, "snap doesn't work in windows")
-	// only the metadata goreleaser generates is asserted here, and the pipe
+	// only the metadata go-publisher generates is asserted here, and the pipe
 	// does not check the packed file, so a real snapcraft is not needed.
 	fakeSnapcraft(t)
 	folder := t.TempDir()
@@ -457,7 +457,7 @@ func TestNoSnapcraftInPath(t *testing.T) {
 
 func TestRunNoArguments(t *testing.T) {
 	testlib.SkipIfWindows(t, "snap doesn't work in windows")
-	// only the metadata goreleaser generates is asserted here, and the pipe
+	// only the metadata go-publisher generates is asserted here, and the pipe
 	// does not check the packed file, so a real snapcraft is not needed.
 	fakeSnapcraft(t)
 	folder := t.TempDir()
@@ -495,7 +495,7 @@ func TestRunNoArguments(t *testing.T) {
 
 func TestCompleter(t *testing.T) {
 	testlib.SkipIfWindows(t, "snap doesn't work in windows")
-	// only the metadata goreleaser generates is asserted here, and the pipe
+	// only the metadata go-publisher generates is asserted here, and the pipe
 	// does not check the packed file, so a real snapcraft is not needed.
 	fakeSnapcraft(t)
 	folder := t.TempDir()
@@ -536,7 +536,7 @@ func TestCompleter(t *testing.T) {
 
 func TestCommand(t *testing.T) {
 	testlib.SkipIfWindows(t, "snap doesn't work in windows")
-	// only the metadata goreleaser generates is asserted here, and the pipe
+	// only the metadata go-publisher generates is asserted here, and the pipe
 	// does not check the packed file, so a real snapcraft is not needed.
 	fakeSnapcraft(t)
 	folder := t.TempDir()
@@ -575,7 +575,7 @@ func TestCommand(t *testing.T) {
 
 func TestExtraFile(t *testing.T) {
 	testlib.SkipIfWindows(t, "snap doesn't work in windows")
-	// only the prime/ contents goreleaser writes are asserted.
+	// only the prime/ contents go-publisher writes are asserted.
 	fakeSnapcraft(t)
 	folder := t.TempDir()
 	dist := filepath.Join(folder, "dist")

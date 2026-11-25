@@ -63,7 +63,7 @@ func TestDependencyCheckers(t *testing.T) {
 }
 
 // Pipes that document requiring an external binary in $PATH must be part of
-// the dependency checkers, otherwise `goreleaser healthcheck` reports a clean
+// the dependency checkers, otherwise `go-publisher healthcheck` reports a clean
 // bill of health for a config that cannot run.
 func TestDependencyCheckersCoverExternalBinaries(t *testing.T) {
 	ctx := testctx.WrapWithCfg(t.Context(), config.Project{

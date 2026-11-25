@@ -1,4 +1,4 @@
-// Package artifact provides the core artifact storage for goreleaser.
+// Package artifact provides the core artifact storage for go-publisher.
 package artifact
 
 //nolint:gosec
@@ -106,7 +106,7 @@ const (
 	PyWheel
 	// PySdist is a Python source distribution package.
 	PySdist
-	// Metadata is an internal goreleaser metadata JSON file.
+	// Metadata is an internal go-publisher metadata JSON file.
 	Metadata
 	// Makeself is a makeself self-extracting archive.
 	Makeself
@@ -493,7 +493,7 @@ func (artifacts *Artifacts) GroupByID() map[string][]*Artifact {
 func (artifacts *Artifacts) GroupByPlatform() map[string][]*Artifact {
 	// we'll try to keep the most basic platform as group (goos+goarch).
 	// we'll though group it further if we have multiple goarm, goamd64, or
-	// gomips, to keep compatibility with previous versions of goreleaser.
+	// gomips, to keep compatibility with previous versions.
 	simpleResult := map[string][]*Artifact{}
 	specificResult := map[string][]*Artifact{}
 	go386s := map[string]struct{}{}
