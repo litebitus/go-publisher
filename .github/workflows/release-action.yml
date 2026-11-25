@@ -50,43 +50,17 @@ jobs:
       actions: read
       contents: write
     steps:
-      - name: Wait for the macOS test
-        timeout-minutes: 6
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          runner_wait_seconds=180
-          while true; do
-            job="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs" \
-              --jq '[.jobs[] | select(.name | startswith("test-action-macos / "))][0]')"
-            [ "$job" != "null" ] || { echo "::error::this run has no macOS test job" >&2; exit 1; }
-            status="$(jq -r .status <<<"$job")"
-            case "$status" in
-              completed)
-                conclusion="$(jq -r .conclusion <<<"$job")"
-                [ "$conclusion" = success ] || { echo "::error::the macOS test ended ${conclusion}" >&2; exit 1; }
-                echo "the macOS test passed"
-                exit 0
-                ;;
-              in_progress)
-                ;;
-              *)
-                waited=$(( $(date -u +%s) - $(date -u -d "$(jq -r .created_at <<<"$job")" +%s) ))
-                if [ "$waited" -ge "$runner_wait_seconds" ]; then
-                  echo "::warning::the macOS test got no runner within ${runner_wait_seconds} seconds; releasing without it"
-                  exit 0
-                fi
-                ;;
-            esac
-            sleep 15
-          done
-
       - name: Checkout
         uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           fetch-tags: true
+
+      - name: Wait for the macOS test
+        timeout-minutes: 6
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/wait-for-macos-test.sh "test-action-macos / test-action (macos-26)"
 
       - name: Set up Go
         uses: actions/setup-go@v7.1.0

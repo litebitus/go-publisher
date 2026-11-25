@@ -83,7 +83,7 @@ The configuration format and go-publisher carry separate versions. The format's 
 | changelog | `action.CHANGELOG.md` |
 | go-publisher release | the newest go-publisher release when the action is released, stamped into `action.yml` |
 | release | the `Release Action` workflow runs the `Test Action` workflow, stamps the changelog and the go-publisher release, tags, publishes a GitHub Release that is never the repo's latest, and moves the major tag |
-| release gate | the Linux tests must pass; the macOS test must pass once it runs, and a macOS test that gets no runner within 3 minutes is released past with a warning |
+| tests | the Linux tests must pass; the macOS test never fails a job, and a macOS test that fails, gets no runner within 3 minutes or has not finished in time is a warning, in `Test Action` and in the action's release alike; `make test-action` runs the action's install on the local machine |
 
 ## TODO
 

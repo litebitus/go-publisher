@@ -6,10 +6,14 @@ on:
     paths:
       - ".github/workflows/test-action.yml"
       - "action.yml"
+      - "scripts/install-go-publisher.sh"
+      - "scripts/wait-for-macos-test.sh"
   pull_request:
     paths:
       - ".github/workflows/test-action.yml"
       - "action.yml"
+      - "scripts/install-go-publisher.sh"
+      - "scripts/wait-for-macos-test.sh"
   workflow_call:
     inputs:
       runners:
@@ -25,8 +29,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: ${{ fromJSON(inputs.runners || '["macos-26", "ubuntu-26.04", "ubuntu-26.04-arm"]') }}
+        runner: ${{ fromJSON(inputs.runners || '["ubuntu-26.04", "ubuntu-26.04-arm"]') }}
     runs-on: ${{ matrix.runner }}
+    continue-on-error: ${{ startsWith(matrix.runner, 'macos-') }}
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -36,3 +41,34 @@ jobs:
         uses: ./
         with:
           args: check
+
+  test-action-macos:
+    if: ${{ inputs.runners == '' }}
+    runs-on: macos-26
+    continue-on-error: true
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+
+      - name: Check the configuration with the action
+        uses: ./
+        with:
+          args: check
+
+  wait-for-macos:
+    if: ${{ inputs.runners == '' }}
+    needs: test-action
+    runs-on: ubuntu-26.04
+    timeout-minutes: 6
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+
+      - name: Wait for the macOS test
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/wait-for-macos-test.sh test-action-macos

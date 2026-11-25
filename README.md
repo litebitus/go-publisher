@@ -71,6 +71,7 @@ Go and Node build and test the repo.
 |---|---|
 | `make build` | runs the tests, then builds `bin/go-publisher` |
 | `make test` | `go vet`, a `gofmt` check, the Go tests with the race detector and a coverage floor, and the schemas loaded in the YAML DSL standard's JavaScript reader |
+| `make test-action` | installs the go-publisher release the action carries, as the action does, on this machine, and runs its `check` |
 
 The packagers' tests run their tools, such as snapcraft, flatpak, Zig, cosign and syft; the `Test` workflow installs them.
 
