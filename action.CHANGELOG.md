@@ -4,6 +4,9 @@ Each release is tagged `action/vX.Y.Z`, and its major tag, such as `action/v1`, 
 
 ## Unreleased
 
+- GitHub Action
+  - Installs the go-publisher release it carries, the newest when the action is released; the `version` input is gone.
+
 ## v1.0.0 — 2026-11-25
 
 - GitHub Action

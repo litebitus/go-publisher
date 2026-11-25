@@ -1,12 +1,9 @@
 name: go-publisher
 description: >-
-  Installs a go-publisher release, checked against the release's checksums, and
-  runs it.
+  Installs the go-publisher release this action carries, checked against the
+  release's checksums, and runs it.
 
 inputs:
-  version:
-    description: The go-publisher release to install, its tag, such as `v1.2.3`.
-    required: true
   args:
     description: Arguments go-publisher runs with, split on whitespace, such as `release --clean`.
     required: true
@@ -21,13 +18,11 @@ runs:
     - name: Install go-publisher
       shell: bash
       env:
-        VERSION: ${{ inputs.version }}
+        VERSION: v0.0.3
         RUNNER_OS_NAME: ${{ runner.os }}
         RUNNER_ARCHITECTURE: ${{ runner.arch }}
       run: |
         set -euo pipefail
-        [[ "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] ||
-          { echo "version ${VERSION} is not a go-publisher release tag, such as v1.2.3" >&2; exit 1; }
         case "$RUNNER_OS_NAME" in
           Linux) goos=linux ;;
           macOS) goos=darwin ;;

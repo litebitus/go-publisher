@@ -35,5 +35,4 @@ jobs:
       - name: Check the configuration with the action
         uses: ./
         with:
-          version: v0.0.3
           args: check

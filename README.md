@@ -23,12 +23,11 @@ go-publisher release --snapshot --clean
 go-publisher release --clean
 ```
 
-In a GitHub Actions workflow, the action installs the go-publisher release `version` names and runs it:
+In a GitHub Actions workflow, the action installs the go-publisher release it carries and runs it:
 
 ```yaml
 - uses: litebitus/go-publisher@action/v1
   with:
-    version: v1.2.3
     args: release --clean
   env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
