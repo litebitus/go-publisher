@@ -25,7 +25,7 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 45
     steps:
       - name: Checkout
@@ -68,28 +68,28 @@ jobs:
           set -euo pipefail
           mkdir -p "$HOME/.local/bin"
           curl -fsSL -o "$HOME/.local/bin/alejandra" \
-            https://github.com/kamadorueda/alejandra/releases/download/4.0.0/alejandra-x86_64-unknown-linux-musl
+            https://github.com/kamadorueda/alejandra/releases/download/4.1.0/alejandra-x86_64-unknown-linux-musl
           curl -fsSL -o "$HOME/.local/bin/nixfmt" \
-            https://github.com/NixOS/nixfmt/releases/download/v1.4.0/nixfmt
-          echo "a23b9d47cba945805c6169541046de890e94e07a5aa416c86dee15bca2da6216  $HOME/.local/bin/alejandra" | sha256sum -c -
-          echo "62488394d5233283096466350487ed46470366f57db4bec824a87ecbacce960a  $HOME/.local/bin/nixfmt" | sha256sum -c -
+            https://github.com/NixOS/nixfmt/releases/download/v1.5.0/nixfmt
+          echo "1f977b58dabc146d1f1c872272b5c3136b9f3152b41bc91a60ec2ad4eb3f70ad  $HOME/.local/bin/alejandra" | sha256sum -c -
+          echo "aa029247ab89c897e2f3948463967553f902f86e86e3402fa28cb29c4a44f745  $HOME/.local/bin/nixfmt" | sha256sum -c -
           chmod +x "$HOME/.local/bin/alejandra" "$HOME/.local/bin/nixfmt"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Set up Go
-        uses: actions/setup-go@v7.0.0
+        uses: actions/setup-go@v7.1.0
         with:
           go-version-file: go.mod
 
       - name: Set up Node
         uses: actions/setup-node@v7.1.0
         with:
-          node-version: "25"
+          node-version: "26.13.1"
 
       - name: Set up Zig
         uses: mlugg/setup-zig@v2.2.1
         with:
-          version: "0.16.0"
+          version: "0.17.1"
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2.2.0
@@ -98,7 +98,7 @@ jobs:
         uses: denoland/setup-deno@v2.0.5
 
       - name: Install cargo-binstall
-        uses: cargo-bins/cargo-binstall@v1.26.2
+        uses: cargo-bins/cargo-binstall@v1.28.0
 
       - name: Install cargo-zigbuild
         run: |
@@ -106,18 +106,18 @@ jobs:
           cargo binstall -y cargo-zigbuild
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v10.3.3
+        uses: astral-sh/setup-uv@v10.4.0
 
       - name: Install poetry
         run: uv tool install poetry
 
       - name: Install cosign
-        uses: sigstore/cosign-installer@v4.1.3
+        uses: sigstore/cosign-installer@v4.1.4
         with:
-          cosign-release: "v3.0.3"
+          cosign-release: "v3.1.5"
 
       - name: Install syft
-        uses: anchore/sbom-action/download-syft@v0.24.3
+        uses: anchore/sbom-action/download-syft@v0.24.4
 
       - name: Test
         run: make test
