@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Job summary
+  - The GitHub Actions job summary opens with `Published <project> <version>` under a Go Publisher Summary heading, and a release lists each of its assets.
+
 ## v0.0.2 — 2026-11-24
 
 - Configuration

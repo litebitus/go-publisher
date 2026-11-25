@@ -59,3 +59,40 @@ func TestAppendConcurrent(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 50, strings.Count(string(bts), "\n"))
 }
+
+func beginWithCleanup(t *testing.T, project, version string) string {
+	t.Helper()
+	path := filepath.Join(t.TempDir(), "summary.md")
+	t.Setenv(envSummary, path)
+	t.Cleanup(func() {
+		mu.Lock()
+		defer mu.Unlock()
+		publishedHeading = ""
+		headingWritten = false
+	})
+	Begin(project, version)
+	return path
+}
+
+func TestBeginWritesHeadingOnceBeforeEntries(t *testing.T) {
+	path := beginWithCleanup(t, "mock-project", "1.2.3")
+
+	Append("GitHub release", "`checksums.txt`", "`mock-project_1.2.3_linux_arm64.tar.gz`")
+	Append("homebrew cask `mock-cask`")
+
+	bts, err := os.ReadFile(path)
+	require.NoError(t, err)
+	require.Equal(t, "### Go Publisher Summary\n\n"+
+		"Published `mock-project` `1.2.3`\n\n"+
+		"- GitHub release\n"+
+		"  - `checksums.txt`\n"+
+		"  - `mock-project_1.2.3_linux_arm64.tar.gz`\n"+
+		"- homebrew cask `mock-cask`\n", string(bts))
+}
+
+func TestBeginWithoutEntriesWritesNothing(t *testing.T) {
+	path := beginWithCleanup(t, "mock-project", "1.2.3")
+
+	_, err := os.Stat(path)
+	require.ErrorIs(t, err, os.ErrNotExist)
+}

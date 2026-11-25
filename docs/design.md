@@ -78,8 +78,6 @@ The configuration format and go-publisher carry separate versions. The format's 
 - Remove Windows support: the winget, Chocolatey and Scoop publishers and the `windows` build target.
 - `changelog.paths`, so a module's changelog lists only the commits that touch its paths.
 - A prefixed `.Tag` where a tag cannot carry a `/`: Docker's default image version `{{.Tag}}`, and the Go module proxy's `module@<tag>`.
-- Write the schemas' descriptions.
-- A coverage floor for `make test`.
 - Run `make test` in the `Release` workflow before it tags, which needs the tools the `Test` workflow installs.
 - The `&tmpl.Error{}` expected errors in the brew, cask, krew, sbom, sign, exec and gitea tests.
 - The code comments that name GoReleaser.

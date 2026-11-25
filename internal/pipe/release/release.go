@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"slices"
 
 	"github.com/caarlos0/log"
 	"github.com/litebitus/go-publisher/internal/artifact"
@@ -155,7 +156,7 @@ func doPublish(ctx *context.Context, client client.Client) error {
 		if err := client.PublishRelease(ctx, releaseID); err != nil {
 			return err
 		}
-		addReleaseSummary(ctx, 0)
+		addReleaseSummary(ctx, nil)
 		return pipe.Skip("release.skip_upload is set")
 	}
 
@@ -203,31 +204,24 @@ func doPublish(ctx *context.Context, client client.Client) error {
 	if err := client.PublishRelease(ctx, releaseID); err != nil {
 		return err
 	}
-	addReleaseSummary(ctx, len(uploadable))
+	addReleaseSummary(ctx, uploadable)
 	return nil
 }
 
-// addReleaseSummary records the release in the run summary.
-func addReleaseSummary(ctx *context.Context, assets int) {
+// addReleaseSummary records the release in the run summary, with each of its
+// assets.
+func addReleaseSummary(ctx *context.Context, assets []*artifact.Artifact) {
 	if client.IsDraftRelease(ctx) {
 		// a draft release is created but never published, so reporting it as
 		// "published" would be misleading.
 		return
 	}
-	var detail string
-	switch assets {
-	case 0:
-		detail = "no assets"
-	case 1:
-		detail = "1 asset"
-	default:
-		detail = fmt.Sprintf("%d assets", assets)
+	assetNames := make([]string, 0, len(assets))
+	for _, asset := range assets {
+		assetNames = append(assetNames, "`"+asset.Name+"`")
 	}
-	msg := fmt.Sprintf("Published %s to %s with %s", ctx.Version, releaseTarget(ctx), detail)
-	if ctx.ReleaseURL != "" {
-		msg += ": " + ctx.ReleaseURL
-	}
-	summary.Append(msg)
+	slices.Sort(assetNames)
+	summary.Append(releaseTarget(ctx)+" release", assetNames...)
 }
 
 func releaseTarget(ctx *context.Context) string {

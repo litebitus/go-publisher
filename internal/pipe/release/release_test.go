@@ -21,7 +21,11 @@ func TestPipeDescription(t *testing.T) {
 }
 
 func TestAddReleaseSummary(t *testing.T) {
-	run := func(t *testing.T, ctx *context.Context, assets int) string {
+	assets := []*artifact.Artifact{
+		{Name: "mock-project_1.2.3_linux_arm64.tar.gz"},
+		{Name: "checksums.txt"},
+	}
+	run := func(t *testing.T, ctx *context.Context, assets []*artifact.Artifact) string {
 		t.Helper()
 		path := filepath.Join(t.TempDir(), "summary.md")
 		t.Setenv("GITHUB_STEP_SUMMARY", path)
@@ -36,25 +40,33 @@ func TestAddReleaseSummary(t *testing.T) {
 
 	t.Run("published records an entry", func(t *testing.T) {
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{}, testctx.GitHubTokenType, testctx.WithVersion("1.2.3"))
-		require.Equal(t, "- Published 1.2.3 to GitHub with 3 assets\n", run(t, ctx, 3))
+		require.Equal(t, "- GitHub release\n"+
+			"  - `checksums.txt`\n"+
+			"  - `mock-project_1.2.3_linux_arm64.tar.gz`\n", run(t, ctx, assets))
+	})
+	t.Run("no assets records the release alone", func(t *testing.T) {
+		ctx := testctx.WrapWithCfg(t.Context(), config.Project{}, testctx.GitHubTokenType, testctx.WithVersion("1.2.3"))
+		require.Equal(t, "- GitHub release\n", run(t, ctx, nil))
 	})
 	t.Run("draft records nothing", func(t *testing.T) {
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 			Release: config.Release{Draft: true},
 		}, testctx.GitHubTokenType)
-		require.Empty(t, run(t, ctx, 3))
+		require.Empty(t, run(t, ctx, assets))
 	})
 	t.Run("gitea reports draft", func(t *testing.T) {
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 			Release: config.Release{Draft: true},
 		}, testctx.GiteaTokenType)
-		require.Empty(t, run(t, ctx, 3))
+		require.Empty(t, run(t, ctx, assets))
 	})
 	t.Run("gitlab ignores draft", func(t *testing.T) {
 		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
 			Release: config.Release{Draft: true},
 		}, testctx.GitLabTokenType, testctx.WithVersion("1.2.3"))
-		require.Equal(t, "- Published 1.2.3 to GitLab with 3 assets\n", run(t, ctx, 3))
+		require.Equal(t, "- GitLab release\n"+
+			"  - `checksums.txt`\n"+
+			"  - `mock-project_1.2.3_linux_arm64.tar.gz`\n", run(t, ctx, assets))
 	})
 }
 

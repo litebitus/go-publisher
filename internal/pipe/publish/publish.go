@@ -31,6 +31,7 @@ import (
 	"github.com/litebitus/go-publisher/internal/pipe/upload"
 	"github.com/litebitus/go-publisher/internal/pipe/winget"
 	"github.com/litebitus/go-publisher/internal/skips"
+	"github.com/litebitus/go-publisher/internal/summary"
 	"github.com/litebitus/go-publisher/pkg/context"
 )
 
@@ -85,6 +86,7 @@ func (Pipe) String() string                 { return "publishing" }
 func (Pipe) Skip(ctx *context.Context) bool { return skips.Any(ctx, skips.Publish) }
 
 func (p Pipe) Run(ctx *context.Context) error {
+	summary.Begin(ctx.Config.ProjectName, ctx.Version)
 	memo := errhandler.Memo{}
 	for _, publisher := range p.pipeline {
 		if err := skip.Maybe(
