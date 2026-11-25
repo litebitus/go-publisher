@@ -78,6 +78,4 @@ The configuration format and go-publisher carry separate versions. The format's 
 - A `merge` macro, as the YAML DSL standard defines it: a DSL definition whose function table declares the macro, and a loader that reads the expanded document, so a configuration merges a map into another.
 - Remove Windows support: the winget, Chocolatey and Scoop publishers and the `windows` build target.
 - `changelog.paths`, so a module's changelog lists only the commits that touch its paths.
-- A prefixed `.Tag` where a tag cannot carry a `/`: Docker's default image version `{{.Tag}}`, and the Go module proxy's `module@<tag>`.
-- The `&tmpl.Error{}` expected errors in the brew, cask, krew, sbom, sign, exec and gitea tests.
 - A GitHub Action that installs a go-publisher release and runs it in a workflow, as `goreleaser/goreleaser-action` does for GoReleaser.

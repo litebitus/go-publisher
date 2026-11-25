@@ -87,6 +87,16 @@ func (p Snapshot) Skip(ctx *context.Context) bool {
 	return true
 }
 
+// defaultImageVersion is the image version an image gets when none is
+// configured: the tag, without git.tag_prefix, since an image version cannot
+// carry the prefix's `/`.
+func defaultImageVersion(git config.Git) string {
+	if git.TagPrefix == "" {
+		return "{{.Tag}}"
+	}
+	return fmt.Sprintf("{{ trimprefix .Tag %q }}", git.TagPrefix)
+}
+
 // Default implements defaults.Defaulter.
 func (Base) Default(ctx *context.Context) error {
 	ids := ids.New("dockersv2")
@@ -99,7 +109,7 @@ func (Base) Default(ctx *context.Context) error {
 			docker.Dockerfile = "Dockerfile"
 		}
 		if len(docker.Tags) == 0 {
-			docker.Tags = []string{"{{.Tag}}"}
+			docker.Tags = []string{defaultImageVersion(ctx.Config.Git)}
 		}
 		if len(docker.Platforms) == 0 {
 			docker.Platforms = []string{"linux/amd64", "linux/arm64"}

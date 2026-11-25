@@ -88,6 +88,27 @@ func TestDefault(t *testing.T) {
 	require.Equal(t, "true", d.SBOM)
 }
 
+func TestDefaultImageVersionIsTheTagWithoutItsPrefix(t *testing.T) {
+	for name, testCase := range map[string]struct {
+		tagPrefix, currentTag, want string
+	}{
+		"no prefix":       {"", "v1.2.3", "v1.2.3"},
+		"a module prefix": {"mock-module/", "mock-module/v1.2.3", "v1.2.3"},
+	} {
+		t.Run(name, func(t *testing.T) {
+			ctx := testctx.WrapWithCfg(t.Context(), config.Project{
+				ProjectName: "dockerv2",
+				Git:         config.Git{TagPrefix: testCase.tagPrefix},
+				DockersV2:   []config.DockerV2{{}},
+			}, testctx.WithCurrentTag(testCase.currentTag))
+			require.NoError(t, Base{}.Default(ctx))
+			imageVersion, err := tmpl.New(ctx).Apply(ctx.Config.DockersV2[0].Tags[0])
+			require.NoError(t, err)
+			require.Equal(t, testCase.want, imageVersion)
+		})
+	}
+}
+
 func TestMakeContext(t *testing.T) {
 	t.Run("no dockerfile", func(t *testing.T) {
 		_, err := makeContext(config.DockerV2{}, nil, "  ")

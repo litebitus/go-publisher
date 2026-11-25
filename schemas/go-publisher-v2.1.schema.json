@@ -1571,7 +1571,7 @@
             "type": "string"
           },
           "type": "array",
-          "description": "Tags of the image; empty tags are ignored. Default: `{{ .Tag }}`. Templated."
+          "description": "Tags of the image; empty tags are ignored. Default: `{{ .Tag }}`, without `git.tag_prefix`. Templated."
         },
         "labels": {
           "additionalProperties": {

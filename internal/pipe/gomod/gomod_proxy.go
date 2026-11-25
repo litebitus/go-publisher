@@ -134,6 +134,13 @@ func (ProxyPipe) Run(ctx *context.Context) error {
 
 const goModTpl = `module {{ .BuildID }}`
 
+// moduleQuery is the module and version the proxy fetches: the module at the
+// current tag without git.tag_prefix, since Go tags a module in a
+// subdirectory `<directory>/vX.Y.Z` and fetches it as `<module>@vX.Y.Z`.
+func moduleQuery(ctx *context.Context) string {
+	return ctx.ModulePath + "@" + ctx.Config.Git.TagWithoutPrefix(ctx.Git.CurrentTag)
+}
+
 // ErrProxy happens when something goes wrong while proxying the current go module.
 type ErrProxy struct {
 	err     error
@@ -175,7 +182,7 @@ func proxyBuild(ctx *context.Context, build *config.Build) error {
 		"BuildID": build.ID,
 	})
 
-	log.Infof("proxying %s@%s to build %s", ctx.ModulePath, ctx.Git.CurrentTag, mainPackage)
+	log.Infof("proxying %s to build %s", moduleQuery(ctx), mainPackage)
 
 	mod, err := template.Apply(goModTpl)
 	if err != nil {
@@ -203,7 +210,7 @@ func proxyBuild(ctx *context.Context, build *config.Build) error {
 		ctx,
 		ctx.Config.Retry,
 		func() error {
-			cmd := exec.CommandContext(ctx, ctx.Config.GoMod.GoBinary, "get", ctx.ModulePath+"@"+ctx.Git.CurrentTag)
+			cmd := exec.CommandContext(ctx, ctx.Config.GoMod.GoBinary, "get", moduleQuery(ctx))
 			cmd.Dir = dir
 			cmd.Env = append(ctx.Env.Strings(), ctx.Config.GoMod.Env...)
 			if out, err := cmd.CombinedOutput(); err != nil {

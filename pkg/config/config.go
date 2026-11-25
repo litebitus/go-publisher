@@ -2264,8 +2264,8 @@ type DockerV2 struct {
 	Dockerfile string `yaml:"dockerfile,omitempty" json:"dockerfile,omitempty"`
 	// Names of the image, without tags; empty names are ignored. Templated.
 	Images []string `yaml:"images,omitempty" json:"images,omitempty"`
-	// Tags of the image; empty tags are ignored. Default: `{{ .Tag }}`.
-	// Templated.
+	// Tags of the image; empty tags are ignored. Default: `{{ .Tag }}`,
+	// without `git.tag_prefix`. Templated.
 	Tags []string `yaml:"tags,omitempty" json:"tags,omitempty"`
 	// Labels of the image; entries with an empty key or value are ignored.
 	// Templated.

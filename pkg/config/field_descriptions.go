@@ -292,7 +292,7 @@ var FieldDescriptions = map[string]string{
 	"github.com/litebitus/go-publisher/pkg/config.DockerV2.Platforms":                                    "Platforms the image is built for. Default: `[linux/amd64, linux/arm64]`. Templated.",
 	"github.com/litebitus/go-publisher/pkg/config.DockerV2.Retry":                                        "Retrying of the build. Default: the top-level `retry`. Deprecated: use the top-level `retry`.",
 	"github.com/litebitus/go-publisher/pkg/config.DockerV2.SBOM":                                         "Whether to create and attach an SBOM to the image. Default: `true`. Templated.",
-	"github.com/litebitus/go-publisher/pkg/config.DockerV2.Tags":                                         "Tags of the image; empty tags are ignored. Default: `{{ .Tag }}`. Templated.",
+	"github.com/litebitus/go-publisher/pkg/config.DockerV2.Tags":                                         "Tags of the image; empty tags are ignored. Default: `{{ .Tag }}`, without `git.tag_prefix`. Templated.",
 	"github.com/litebitus/go-publisher/pkg/config.EnvFiles":                                              "EnvFiles is the files that hold the SCM tokens, read when the matching environment variable is unset.",
 	"github.com/litebitus/go-publisher/pkg/config.EnvFiles.GitHubToken":                                  "Path of the file holding the GitHub token. Default: `~/.config/go-publisher/github_token`.",
 	"github.com/litebitus/go-publisher/pkg/config.EnvFiles.GitLabToken":                                  "Path of the file holding the GitLab token. Default: `~/.config/go-publisher/gitlab_token`.",

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Git
+  - With `git.tag_prefix`, a `dockers_v2` image's default version and the Go module proxy's `go get` use the tag without the prefix.
+
 ## v0.0.3 — 2026-11-25
 
 - Job summary

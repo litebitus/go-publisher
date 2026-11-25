@@ -239,6 +239,22 @@ replace (
 	})
 }
 
+func TestModuleQueryIsTheTagWithoutItsPrefix(t *testing.T) {
+	for name, testCase := range map[string]struct {
+		tagPrefix, currentTag string
+	}{
+		"no prefix":       {"", "v1.2.3"},
+		"a module prefix": {"mock-module/", "mock-module/v1.2.3"},
+	} {
+		ctx := testctx.WrapWithCfg(t.Context(), config.Project{
+			Git: config.Git{TagPrefix: testCase.tagPrefix},
+		}, testctx.WithCurrentTag(testCase.currentTag), func(ctx *context.Context) {
+			ctx.ModulePath = "github.com/mock-org/mock-repo/mock-module"
+		})
+		require.Equal(t, "github.com/mock-org/mock-repo/mock-module@v1.2.3", moduleQuery(ctx), name)
+	}
+}
+
 func TestGoModProxy(t *testing.T) {
 	t.Run("testmod", func(t *testing.T) {
 		dir := testlib.Mktmp(t)
