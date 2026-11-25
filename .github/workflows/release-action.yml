@@ -30,6 +30,7 @@ concurrency:
 jobs:
   test-action-linux:
     permissions:
+      actions: read
       contents: read
     uses: ./.github/workflows/test-action.yml
     with:
@@ -37,6 +38,7 @@ jobs:
 
   test-action-macos:
     permissions:
+      actions: read
       contents: read
     uses: ./.github/workflows/test-action.yml
     with:
