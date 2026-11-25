@@ -26,15 +26,21 @@ var errNoVersion = errors.New("node: could not resolve a Node.js version; add en
 const minNodeSEAVersion = "25.5.0"
 
 // ensureNode resolves the node version required by the project in
-// dir, downloads the host binary for target into destDir, and returns
-// its path. destDir belongs to the caller, who must remove it.
+// dir, puts the host binary for target into destDir, and returns its
+// path. destDir belongs to the caller, who must remove it.
 func ensureNode(ctx context.Context, dir, target, destDir string) (string, error) {
 	version, err := resolveVersion(dir)
 	if err != nil {
 		return "", fmt.Errorf("node: resolve node version: %w", err)
 	}
 
-	return downloadHostBinary(ctx, version, target, destDir)
+	return downloadHostBinary(ctx, nodeDistCacheDir(dir), version, target, destDir)
+}
+
+// nodeDistCacheDir is where the project in dir caches the Node.js
+// archives it builds with, the JavaScript tools' node_modules/.cache.
+func nodeDistCacheDir(dir string) string {
+	return filepath.Join(dir, "node_modules", ".cache", "go-publisher", "nodedist")
 }
 
 // resolveVersion picks a Node.js version from `engines.node` in the
@@ -128,16 +134,12 @@ func checkHostNodeVersion(ctx context.Context, tool string, env []string) error 
 	return nil
 }
 
-// downloadHostBinary fetches the per-target Node.js host binary for
-// (version, target) and returns its absolute path. tar.gz archives
-// are extracted; bare windows .exe archives are used as-is. The
-// binary is written into destDir, which belongs to the caller. The
-// downloaded archive is always removed before returning.
-func downloadHostBinary(ctx context.Context, version, target, destDir string) (string, error) {
-	log.WithField("version", version).
-		WithField("target", target).
-		Info("downloading")
-
+// downloadHostBinary puts the per-target Node.js host binary for
+// (version, target) into destDir, which belongs to the caller, and
+// returns its path. The archive comes from cacheDir, downloaded there
+// on a miss. tar.gz archives are extracted; bare windows .exe archives
+// are copied.
+func downloadHostBinary(ctx context.Context, cacheDir, version, target, destDir string) (string, error) {
 	isWin := strings.HasPrefix(target, "win-")
 	archiveFile := fmt.Sprintf("node-%s-%s.tar.gz", version, target)
 	binName := "node"
@@ -146,15 +148,25 @@ func downloadHostBinary(ctx context.Context, version, target, destDir string) (s
 		binName = "node.exe"
 	}
 
-	archive, err := nodedist.Download(ctx, version, archiveFile)
-	if err != nil {
-		return "", err
+	archive, cached := nodedist.Cached(cacheDir, version, archiveFile)
+	if cached {
+		log.WithField("version", version).
+			WithField("target", target).
+			Info("using cached")
+	} else {
+		log.WithField("version", version).
+			WithField("target", target).
+			Info("downloading")
+		downloaded, err := nodedist.Download(ctx, cacheDir, version, archiveFile)
+		if err != nil {
+			return "", err
+		}
+		archive = downloaded
 	}
-	defer func() { _ = os.Remove(archive) }()
 
 	bin := filepath.Join(destDir, binName)
 	if isWin {
-		if err := os.Rename(archive, bin); err != nil {
+		if err := copyFile(archive, bin); err != nil {
 			return "", err
 		}
 	} else {
@@ -167,6 +179,24 @@ func downloadHostBinary(ctx context.Context, version, target, destDir string) (s
 		return "", err
 	}
 	return bin, nil
+}
+
+// copyFile copies the file at src to dst.
+func copyFile(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	if _, err := io.Copy(out, in); err != nil {
+		_ = out.Close()
+		return err
+	}
+	return out.Close()
 }
 
 // extractFromTarGz finds entry inside the gzipped tar at archivePath

@@ -71,14 +71,18 @@ func TestDownloadHostBinary(t *testing.T) {
 			http.DefaultClient.Transport = nodeDistTestTransport{host: server.Listener.Addr().String()}
 			t.Cleanup(func() { http.DefaultClient.Transport = previousTransport })
 
-			dir := t.TempDir()
-			path, err := downloadHostBinary(t.Context(), version, target, dir)
-			require.NoError(t, err)
-			require.Equal(t, filepath.Join(dir, "node"), path)
-			got, err := os.ReadFile(path)
-			require.NoError(t, err)
-			require.Equal(t, contents, string(got))
-			require.Equal(t, int32(1), requests.Load())
+			cacheDir := t.TempDir()
+			for _, attempt := range []string{"downloaded", "cached"} {
+				dir := t.TempDir()
+				path, err := downloadHostBinary(t.Context(), cacheDir, version, target, dir)
+				require.NoError(t, err, attempt)
+				require.Equal(t, filepath.Join(dir, "node"), path, attempt)
+				got, err := os.ReadFile(path)
+				require.NoError(t, err, attempt)
+				require.Equal(t, contents, string(got), attempt)
+				require.Equal(t, int32(1), requests.Load(), attempt)
+			}
+			require.FileExists(t, filepath.Join(cacheDir, version, name+".tar.gz"))
 		})
 	}
 }

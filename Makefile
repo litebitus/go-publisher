@@ -13,5 +13,5 @@ test:
 	@go tool cover -func=$(COVERAGE_PROFILE) | awk -v floor=$(COVERAGE_FLOOR) '/^total:/ { \
 		total = $$3 + 0; printf "coverage %s, floor %s%%\n", $$3, floor; \
 		if (total < floor) { print "coverage is below the floor"; exit 1 } }'
-	npm ci --prefix schemas --no-audit --no-fund
+	npm install --no-audit --no-fund
 	node --test --test-timeout=5000 --test-force-exit schemas/

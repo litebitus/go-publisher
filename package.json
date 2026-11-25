@@ -1,4 +1,5 @@
 {
+  "name": "go-publisher",
   "private": true,
   "description": "Checks that the configuration's JSON Schemas load in the YAML DSL standard's JavaScript reader, the one editors validate with.",
   "devDependencies": {

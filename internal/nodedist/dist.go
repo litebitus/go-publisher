@@ -1,6 +1,7 @@
 // Package nodedist is a small client for the official Node.js
 // distribution at https://nodejs.org/dist. It exposes the embedded
-// release index and a SHA-256 verifying downloader.
+// release index and a SHA-256 verifying downloader into a cache the
+// caller names, bounded in size.
 //
 // The package is intentionally infrastructure-only: it knows nothing
 // about Single Executable Applications, version resolution from
@@ -39,3 +40,9 @@ var defaultRetry = config.Retry{
 	Delay:    time.Second,
 	MaxDelay: 30 * time.Second,
 }
+
+// cacheSizeLimitBytes is the most a cache's archives total once a
+// download is stored. Tests may override it.
+//
+//nolint:gochecknoglobals
+var cacheSizeLimitBytes int64 = 1 << 30

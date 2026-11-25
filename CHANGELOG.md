@@ -4,6 +4,8 @@
 
 - Job summary
   - The GitHub Actions job summary opens with `Published <project> <version>` under a Go Publisher Summary heading, and a release lists each of its assets.
+- Node builds
+  - The Node.js archives a build downloads are cached in the project's `node_modules/.cache/go-publisher/nodedist/`, served only when their SHA-256 matches the release index, and the least recently used are removed past 1 GiB.
 
 ## v0.0.2 — 2026-11-24
 

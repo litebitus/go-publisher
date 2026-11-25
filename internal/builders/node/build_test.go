@@ -122,7 +122,7 @@ func TestBuild(t *testing.T) {
 	hostVersion := strings.TrimSpace(string(out))
 
 	// nodejs.org's build: a node built as a shared library, such as Homebrew's, cannot build executables.
-	officialNode, err := downloadHostBinary(t.Context(), hostVersion, hostNodeTarget(t), t.TempDir())
+	officialNode, err := downloadHostBinary(t.Context(), nodeDistCacheDir(testlib.ModuleRoot(t)), hostVersion, hostNodeTarget(t), t.TempDir())
 	require.NoError(t, err)
 
 	for _, target := range []string{"darwin-arm64", "linux-x64", "win-x64"} {

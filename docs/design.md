@@ -81,5 +81,4 @@ The configuration format and go-publisher carry separate versions. The format's 
 - Run `make test` in the `Release` workflow before it tags, which needs the tools the `Test` workflow installs.
 - The `&tmpl.Error{}` expected errors in the brew, cask, krew, sbom, sign, exec and gitea tests.
 - The code comments that name GoReleaser.
-- A cache for the Node.js archives `nodedist` downloads, in the user cache directory, served only when its SHA-256 matches the embedded index, and bounded in size.
 - A GitHub Action that installs a go-publisher release and runs it in a workflow, as `goreleaser/goreleaser-action` does for GoReleaser.
