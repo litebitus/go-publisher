@@ -4,6 +4,8 @@ Each release is tagged `action/vX.Y.Z`, and its major tag, such as `action/v1`, 
 
 ## Unreleased
 
+## v1.0.3 — 2026-11-25
+
 - Downloads onto runners: the symlink to a missing file is removed from the repo, which v1.0.2 still carried.
 
 ## v1.0.2 — 2026-11-25
