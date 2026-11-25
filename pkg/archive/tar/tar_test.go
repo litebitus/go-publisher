@@ -173,7 +173,7 @@ func TestTarInvalidLink(t *testing.T) {
 	defer archive.Close()
 
 	require.NoError(t, archive.Add(config.File{
-		Source:      "../testdata/badlink.txt",
+		Source:      testlib.DanglingSymlink(t),
 		Destination: "badlink.txt",
 	}))
 }

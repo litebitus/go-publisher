@@ -4,6 +4,9 @@ Each release is tagged `action/vX.Y.Z`, and its major tag, such as `action/v1`, 
 
 ## Unreleased
 
+- GitHub Action
+  - Downloads onto runners: the repo no longer carries a symlink to a missing file, which failed the runner's unpacking of the action.
+
 ## v1.0.1 — 2026-11-25
 
 - GitHub Action
